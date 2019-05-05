@@ -18,7 +18,11 @@ const {
   patchFor, putFor, deleteFor, routerFor 
 } = require('@lykmapipo/express-rest-actions');
 
-const options = { ... }
+const options = { 
+  get: ..., getById: ..., 
+  post: ..., put: ..., 
+  patch: ..., delete: ... 
+};
 
 app.get('/v1/users', getFor(options));
 app.get('/v1/users/:id', getByIdFor(options));
