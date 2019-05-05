@@ -29,7 +29,7 @@ export const getFor = optns => {
   const { get } = options;
 
   // create http handler to get resources
-  const index = (request, response, next) => {
+  const httpGet = (request, response, next) => {
     // ensure service get
     if (!isFunction(get)) {
       return response.methodNotAllowed();
@@ -39,7 +39,7 @@ export const getFor = optns => {
     const query = mergeObjects(request.mquery);
 
     // handle request
-    const afterIndex = (error, results) => {
+    const afterHttpGet = (error, results) => {
       // handle error
       if (error) {
         return next(error);
@@ -49,11 +49,11 @@ export const getFor = optns => {
     };
 
     // invoke service get
-    return get(query, afterIndex);
+    return get(query, afterHttpGet);
   };
 
   // return get handler
-  return index;
+  return httpGet;
 };
 
 /**
@@ -83,7 +83,7 @@ export const getByIdFor = optns => {
   const { getById } = options;
 
   // create http handler to get single resource
-  const show = (request, response, next) => {
+  const httpGetById = (request, response, next) => {
     // ensure service getById
     if (!isFunction(getById)) {
       return response.methodNotAllowed();
@@ -94,7 +94,7 @@ export const getByIdFor = optns => {
     const query = mergeObjects(request.mquery, { _id: id, id });
 
     // handle request
-    const afterShow = (error, results) => {
+    const afterHttpGetById = (error, results) => {
       // handle error
       if (error) {
         return next(error);
@@ -104,11 +104,11 @@ export const getByIdFor = optns => {
     };
 
     // invoke service getById
-    return getById(query, afterShow);
+    return getById(query, afterHttpGetById);
   };
 
   // return get handler
-  return show;
+  return httpGetById;
 };
 
 /**
@@ -138,7 +138,7 @@ export const postFor = optns => {
   const { post } = options;
 
   // create http handler to create resource
-  const create = (request, response, next) => {
+  const httpPost = (request, response, next) => {
     // ensure service post
     if (!isFunction(post)) {
       return response.methodNotAllowed();
@@ -148,7 +148,7 @@ export const postFor = optns => {
     const query = mergeObjects(request.body);
 
     // handle request
-    const afterCreate = (error, results) => {
+    const afterHttpPost = (error, results) => {
       // handle error
       if (error) {
         return next(error);
@@ -158,11 +158,11 @@ export const postFor = optns => {
     };
 
     // invoke service post
-    return post(query, afterCreate);
+    return post(query, afterHttpPost);
   };
 
   // return get handler
-  return create;
+  return httpPost;
 };
 
 /**
@@ -192,7 +192,7 @@ export const patchFor = optns => {
   const { patch } = options;
 
   // create http handler to patch single resource
-  const update = (request, response, next) => {
+  const httpPatch = (request, response, next) => {
     // ensure service patch
     if (!isFunction(patch)) {
       return response.methodNotAllowed();
@@ -203,7 +203,7 @@ export const patchFor = optns => {
     const query = mergeObjects(request.body, { _id: id, id });
 
     // handle request
-    const afterUpdate = (error, results) => {
+    const afterHttpPatch = (error, results) => {
       // handle error
       if (error) {
         return next(error);
@@ -213,11 +213,11 @@ export const patchFor = optns => {
     };
 
     // invoke service patch
-    return patch(query, afterUpdate);
+    return patch(query, afterHttpPatch);
   };
 
   // return get handler
-  return update;
+  return httpPatch;
 };
 
 export { app, Router };
