@@ -3,8 +3,9 @@ import {
   expect,
   testGet,
   testPost,
+  testPatch,
 } from '@lykmapipo/express-test-helpers';
-import { app, getFor, getByIdFor, postFor } from '../src/index';
+import { app, getFor, getByIdFor, postFor, patchFor } from '../src/index';
 
 describe('getFor', () => {
   beforeEach(() => clear());
@@ -69,5 +70,27 @@ describe('postFor', () => {
   it('should handle http POST /resource with no service', done => {
     app.post('/v1/users', postFor());
     testPost('/v1/users', {}).expect(405, done);
+  });
+});
+
+describe('patchFor', () => {
+  beforeEach(() => clear());
+
+  it('should handle http PATCH /resource/:id with provided service', done => {
+    const results = {};
+    const patch = (body, cb) => cb(null, results);
+    app.patch('/v1/users/:id', patchFor({ patch }));
+    testPatch('/v1/users/1', results)
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(results);
+        done(error, body);
+      });
+  });
+
+  it('should handle http PATCH /resource/:id with no service', done => {
+    app.patch('/v1/users/:id', patchFor());
+    testPatch('/v1/users/1', {}).expect(405, done);
   });
 });
