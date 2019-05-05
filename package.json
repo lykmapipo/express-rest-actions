@@ -84,6 +84,8 @@
   },
   "peerDependencies": {},
   "dependencies": {
+    "@lykmapipo/common": "^0.17.2",
+    "@lykmapipo/env": "^0.7.4",
     "@lykmapipo/express-common": ">=0.16.0",
     "lodash": ">=4.17.11"
   },
