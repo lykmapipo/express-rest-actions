@@ -90,7 +90,8 @@ export const getByIdFor = optns => {
     }
 
     // obtain mquery options and id path params
-    const query = mergeObjects(request.mquery, { _id: request.params.id });
+    const { id } = request.params || {};
+    const query = mergeObjects(request.mquery, { _id: id, id });
 
     // handle request
     const afterShow = (error, results) => {
