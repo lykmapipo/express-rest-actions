@@ -1,5 +1,6 @@
 import { isFunction } from 'lodash';
 import { mergeObjects } from '@lykmapipo/common';
+import { getString } from '@lykmapipo/env';
 import { app, Router } from '@lykmapipo/express-common';
 
 /**
@@ -329,6 +330,59 @@ export const deleteFor = optns => {
 
   // return http put handler
   return httpDelete;
+};
+
+/**
+ * @function routerFor
+ * @name routerFor
+ * @description Create http resource router for given service options
+ * @param {Object} optns valid routerFor options
+ * @param {String} optns.resource valid resource name to be used as http path
+ * @param {Function} optns.get valid service function to invoke when get
+ * @param {Function} optns.getById valid service function to invoke when getById
+ * @param {Function} optns.post valid service function to invoke when post
+ * @param {Function} optns.patch valid service function to invoke when patch
+ * @param {Function} optns.put valid service function to invoke when put
+ * @param {Function} optns.del valid service function to invoke when delete
+ * @param {Boolean} [optns.soft=false] whether to invoke soft router
+ * @param {String} [optns.version='1.0.0'] valid api version to append on path
+ * @return {Function} valid express middleware to handle router request
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * const { app, routerFor } = require('@lykmapipo/express-rest-actions');
+ *
+ * const options = { get: ..., post: ..., del: ... };
+ * app.use(routerFor(options));
+ *
+ */
+export const routerFor = optns => {
+  // ensure options
+  const defaults = { version: getString('API_VERSION', '1.0.0'), soft: false };
+  const options = mergeObjects(defaults, optns);
+
+  // create paths
+  const PATH_SINGLE = `/${options.resource}/:id`;
+  const PATH_LIST = `/${options.resource}`;
+
+  // create versioned router
+  const router = new Router(options);
+
+  // bind http action handlers
+  router.get(PATH_LIST, getFor(options));
+  router.get(PATH_SINGLE, getByIdFor(options));
+  router.post(PATH_LIST, postFor(options));
+  router.patch(PATH_SINGLE, patchFor(options));
+  router.put(PATH_SINGLE, putFor(options));
+  router.delete(PATH_SINGLE, deleteFor(options));
+
+  // return http resource router
+  return router;
 };
 
 export { app, Router };
