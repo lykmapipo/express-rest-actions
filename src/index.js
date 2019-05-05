@@ -220,4 +220,59 @@ export const patchFor = optns => {
   return httpPatch;
 };
 
+/**
+ * @function putFor
+ * @name putFor
+ * @description Create http put handler for given service options
+ * @param {Object} optns valid putFor options
+ * @param {Function} optns.put valid service function to invoke when put
+ * @return {Function} valid express middleware to handle request
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * const { app, putFor } = require('@lykmapipo/express-rest-actions');
+ *
+ * const put = (query, done) => done(null, { ... });
+ * app.put('/v1/users/:id', putFor({ put }));
+ *
+ */
+export const putFor = optns => {
+  // ensure options
+  const options = mergeObjects(optns);
+  const { put } = options;
+
+  // create http handler to put single resource
+  const httpPut = (request, response, next) => {
+    // ensure service put
+    if (!isFunction(put)) {
+      return response.methodNotAllowed();
+    }
+
+    // obtain request body and id path params
+    const { id } = request.params || {};
+    const query = mergeObjects(request.body, { _id: id, id });
+
+    // handle request
+    const afterHttpPut = (error, results) => {
+      // handle error
+      if (error) {
+        return next(error);
+      }
+      // handle success
+      return response.ok(results);
+    };
+
+    // invoke service put
+    return put(query, afterHttpPut);
+  };
+
+  // return get handler
+  return httpPut;
+};
+
 export { app, Router };

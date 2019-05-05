@@ -4,8 +4,16 @@ import {
   testGet,
   testPost,
   testPatch,
+  testPut,
 } from '@lykmapipo/express-test-helpers';
-import { app, getFor, getByIdFor, postFor, patchFor } from '../src/index';
+import {
+  app,
+  getFor,
+  getByIdFor,
+  postFor,
+  patchFor,
+  putFor,
+} from '../src/index';
 
 describe('getFor', () => {
   beforeEach(() => clear());
@@ -92,5 +100,27 @@ describe('patchFor', () => {
   it('should handle http PATCH /resource/:id with no service', done => {
     app.patch('/v1/users/:id', patchFor());
     testPatch('/v1/users/1', {}).expect(405, done);
+  });
+});
+
+describe('putFor', () => {
+  beforeEach(() => clear());
+
+  it('should handle http PUT /resource/:id with provided service', done => {
+    const results = {};
+    const put = (body, cb) => cb(null, results);
+    app.put('/v1/users/:id', putFor({ put }));
+    testPut('/v1/users/1', results)
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(results);
+        done(error, body);
+      });
+  });
+
+  it('should handle http PUT /resource/:id with no service', done => {
+    app.put('/v1/users/:id', putFor());
+    testPut('/v1/users/1', {}).expect(405, done);
   });
 });
