@@ -8,7 +8,7 @@ import { app, Router } from '@lykmapipo/express-common';
  * @description Create http get handler for given service options
  * @param {Object} optns valid getFor options
  * @param {Function} optns.get valid service function to invoke when get
- * @return {Function} valid express middleware to handle request
+ * @return {Function} valid express middleware to handle get request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
  * @since 0.1.0
@@ -62,7 +62,7 @@ export const getFor = optns => {
  * @description Create http getById handler for given service options
  * @param {Object} optns valid getByIdFor options
  * @param {Function} optns.getById valid service function to invoke when getById
- * @return {Function} valid express middleware to handle request
+ * @return {Function} valid express middleware to handle get by id request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
  * @since 0.1.0
@@ -117,7 +117,7 @@ export const getByIdFor = optns => {
  * @description Create http post handler for given service options
  * @param {Object} optns valid postFor options
  * @param {Function} optns.post valid service function to invoke when post
- * @return {Function} valid express middleware to handle request
+ * @return {Function} valid express middleware to handle post request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
  * @since 0.1.0
@@ -171,7 +171,7 @@ export const postFor = optns => {
  * @description Create http patch handler for given service options
  * @param {Object} optns valid patchFor options
  * @param {Function} optns.patch valid service function to invoke when patch
- * @return {Function} valid express middleware to handle request
+ * @return {Function} valid express middleware to handle patch request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
  * @since 0.1.0
@@ -226,7 +226,7 @@ export const patchFor = optns => {
  * @description Create http put handler for given service options
  * @param {Object} optns valid putFor options
  * @param {Function} optns.put valid service function to invoke when put
- * @return {Function} valid express middleware to handle request
+ * @return {Function} valid express middleware to handle put request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
  * @since 0.1.0
@@ -273,6 +273,62 @@ export const putFor = optns => {
 
   // return http put handler
   return httpPut;
+};
+
+/**
+ * @function deleteFor
+ * @name deleteFor
+ * @description Create http delete handler for given service options
+ * @param {Object} optns valid deleteFor options
+ * @param {Function} optns.del valid service function to invoke when delete
+ * @param {Boolean} [optns.soft=false] whether to invoke soft delete
+ * @return {Function} valid express middleware to handle delete request
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.1.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * const { app, deleteFor } = require('@lykmapipo/express-rest-actions');
+ *
+ * const del = (query, done) => done(null, { ... });
+ * app.delete('/v1/users/:id', deleteFor({ del }));
+ *
+ */
+export const deleteFor = optns => {
+  // ensure options
+  const options = mergeObjects(optns);
+  const { del, soft = false } = options;
+
+  // create http handler to delete single resource
+  const httpDelete = (request, response, next) => {
+    // ensure service delete
+    if (!isFunction(del)) {
+      return response.methodNotAllowed();
+    }
+
+    // obtain request body and id path param
+    const { id } = request.params || {};
+    const query = mergeObjects({ _id: id, id, soft });
+
+    // handle request
+    const afterHttpDelete = (error, results) => {
+      // handle error
+      if (error) {
+        return next(error);
+      }
+      // handle success
+      return response.ok(results);
+    };
+
+    // invoke service delete
+    return del(query, afterHttpDelete);
+  };
+
+  // return http put handler
+  return httpDelete;
 };
 
 export { app, Router };

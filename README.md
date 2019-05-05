@@ -21,7 +21,7 @@ const {
 const options = { 
   get: ..., getById: ..., 
   post: ..., put: ..., 
-  patch: ..., delete: ... 
+  patch: ..., del: ... 
 };
 
 app.get('/v1/users', getFor(options));

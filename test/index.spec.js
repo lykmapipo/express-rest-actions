@@ -5,6 +5,7 @@ import {
   testPost,
   testPatch,
   testPut,
+  testDelete,
 } from '@lykmapipo/express-test-helpers';
 import {
   app,
@@ -13,6 +14,7 @@ import {
   postFor,
   patchFor,
   putFor,
+  deleteFor,
 } from '../src/index';
 
 describe('getFor', () => {
@@ -122,5 +124,27 @@ describe('putFor', () => {
   it('should handle http PUT /resource/:id with no service', done => {
     app.put('/v1/users/:id', putFor());
     testPut('/v1/users/1', {}).expect(405, done);
+  });
+});
+
+describe('deleteFor', () => {
+  beforeEach(() => clear());
+
+  it('should handle http DELETE /resource/:id with provided service', done => {
+    const results = {};
+    const del = (body, cb) => cb(null, results);
+    app.delete('/v1/users/:id', deleteFor({ del }));
+    testDelete('/v1/users/1')
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(results);
+        done(error, body);
+      });
+  });
+
+  it('should handle http DELETE /resource/:id with no service', done => {
+    app.delete('/v1/users/:id', deleteFor());
+    testDelete('/v1/users/1').expect(405, done);
   });
 });
