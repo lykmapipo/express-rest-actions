@@ -52,7 +52,7 @@ export const getFor = optns => {
     return get(query, afterHttpGet);
   };
 
-  // return get handler
+  // return http get handler
   return httpGet;
 };
 
@@ -89,7 +89,7 @@ export const getByIdFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain mquery options and id path params
+    // obtain mquery options and id path param
     const { id } = request.params || {};
     const query = mergeObjects(request.mquery, { _id: id, id });
 
@@ -107,7 +107,7 @@ export const getByIdFor = optns => {
     return getById(query, afterHttpGetById);
   };
 
-  // return get handler
+  // return htt get by id handler
   return httpGetById;
 };
 
@@ -137,7 +137,7 @@ export const postFor = optns => {
   const options = mergeObjects(optns);
   const { post } = options;
 
-  // create http handler to create resource
+  // create http handler to create single resource
   const httpPost = (request, response, next) => {
     // ensure service post
     if (!isFunction(post)) {
@@ -161,7 +161,7 @@ export const postFor = optns => {
     return post(query, afterHttpPost);
   };
 
-  // return get handler
+  // return http post handler
   return httpPost;
 };
 
@@ -198,7 +198,7 @@ export const patchFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body and id path params
+    // obtain request body and id path param
     const { id } = request.params || {};
     const query = mergeObjects(request.body, { _id: id, id });
 
@@ -216,7 +216,7 @@ export const patchFor = optns => {
     return patch(query, afterHttpPatch);
   };
 
-  // return get handler
+  // return http patch handler
   return httpPatch;
 };
 
@@ -253,7 +253,7 @@ export const putFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body and id path params
+    // obtain request body and id path param
     const { id } = request.params || {};
     const query = mergeObjects(request.body, { _id: id, id });
 
@@ -271,7 +271,7 @@ export const putFor = optns => {
     return put(query, afterHttpPut);
   };
 
-  // return get handler
+  // return http put handler
   return httpPut;
 };
 
