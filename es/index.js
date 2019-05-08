@@ -2,7 +2,7 @@ import { isFunction } from 'lodash';
 import { mergeObjects } from '@lykmapipo/common';
 import { getString } from '@lykmapipo/env';
 import { Router } from '@lykmapipo/express-common';
-export { Router, app } from '@lykmapipo/express-common';
+export { Router, all, app, del, get, patch, post, put, use } from '@lykmapipo/express-common';
 
 /**
  * @function getFor
@@ -28,12 +28,12 @@ export { Router, app } from '@lykmapipo/express-common';
 const getFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { get } = options;
+  const { get: doGet } = options;
 
   // create http handler to get resources
   const httpGet = (request, response, next) => {
     // ensure service get
-    if (!isFunction(get)) {
+    if (!isFunction(doGet)) {
       return response.methodNotAllowed();
     }
 
@@ -51,7 +51,7 @@ const getFor = optns => {
     };
 
     // invoke service get
-    return get(query, afterHttpGet);
+    return doGet(query, afterHttpGet);
   };
 
   // return http get handler
@@ -82,12 +82,12 @@ const getFor = optns => {
 const getByIdFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { getById } = options;
+  const { getById: doGetById } = options;
 
   // create http handler to get single resource
   const httpGetById = (request, response, next) => {
     // ensure service getById
-    if (!isFunction(getById)) {
+    if (!isFunction(doGetById)) {
       return response.methodNotAllowed();
     }
 
@@ -106,7 +106,7 @@ const getByIdFor = optns => {
     };
 
     // invoke service getById
-    return getById(query, afterHttpGetById);
+    return doGetById(query, afterHttpGetById);
   };
 
   // return htt get by id handler
@@ -137,12 +137,12 @@ const getByIdFor = optns => {
 const postFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { post } = options;
+  const { post: doPost } = options;
 
   // create http handler to create single resource
   const httpPost = (request, response, next) => {
     // ensure service post
-    if (!isFunction(post)) {
+    if (!isFunction(doPost)) {
       return response.methodNotAllowed();
     }
 
@@ -160,7 +160,7 @@ const postFor = optns => {
     };
 
     // invoke service post
-    return post(query, afterHttpPost);
+    return doPost(query, afterHttpPost);
   };
 
   // return http post handler
@@ -191,12 +191,12 @@ const postFor = optns => {
 const patchFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { patch } = options;
+  const { patch: doPatch } = options;
 
   // create http handler to patch single resource
   const httpPatch = (request, response, next) => {
     // ensure service patch
-    if (!isFunction(patch)) {
+    if (!isFunction(doPatch)) {
       return response.methodNotAllowed();
     }
 
@@ -215,7 +215,7 @@ const patchFor = optns => {
     };
 
     // invoke service patch
-    return patch(query, afterHttpPatch);
+    return doPatch(query, afterHttpPatch);
   };
 
   // return http patch handler
@@ -246,12 +246,12 @@ const patchFor = optns => {
 const putFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { put } = options;
+  const { put: doPut } = options;
 
   // create http handler to put single resource
   const httpPut = (request, response, next) => {
     // ensure service put
-    if (!isFunction(put)) {
+    if (!isFunction(doPut)) {
       return response.methodNotAllowed();
     }
 
@@ -270,7 +270,7 @@ const putFor = optns => {
     };
 
     // invoke service put
-    return put(query, afterHttpPut);
+    return doPut(query, afterHttpPut);
   };
 
   // return http put handler
@@ -302,12 +302,12 @@ const putFor = optns => {
 const deleteFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { del, soft = false } = options;
+  const { del: doDelete, soft = false } = options;
 
   // create http handler to delete single resource
   const httpDelete = (request, response, next) => {
     // ensure service delete
-    if (!isFunction(del)) {
+    if (!isFunction(doDelete)) {
       return response.methodNotAllowed();
     }
 
@@ -326,7 +326,7 @@ const deleteFor = optns => {
     };
 
     // invoke service delete
-    return del(query, afterHttpDelete);
+    return doDelete(query, afterHttpDelete);
   };
 
   // return http put handler
@@ -368,19 +368,19 @@ const routerFor = optns => {
   const options = mergeObjects(defaults, optns);
 
   // create paths
-  const PATH_SINGLE = `/${options.resource}/:id`;
-  const PATH_LIST = `/${options.resource}`;
+  const { pathSingle = `/${options.resource}/:id` } = options;
+  const { pathList = `/${options.resource}` } = options;
 
   // create versioned router
   const router = new Router(options);
 
   // bind http action handlers
-  router.get(PATH_LIST, getFor(options));
-  router.get(PATH_SINGLE, getByIdFor(options));
-  router.post(PATH_LIST, postFor(options));
-  router.patch(PATH_SINGLE, patchFor(options));
-  router.put(PATH_SINGLE, putFor(options));
-  router.delete(PATH_SINGLE, deleteFor(options));
+  router.get(pathList, getFor(options));
+  router.get(pathSingle, getByIdFor(options));
+  router.post(pathList, postFor(options));
+  router.patch(pathSingle, patchFor(options));
+  router.put(pathSingle, putFor(options));
+  router.delete(pathSingle, deleteFor(options));
 
   // return http resource router
   return router;

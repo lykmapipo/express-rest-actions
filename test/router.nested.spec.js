@@ -1,7 +1,7 @@
 import { clear, testRouter, faker } from '@lykmapipo/express-test-helpers';
 import { routerFor } from '../src/index';
 
-describe.only('routerFor - nested resources', () => {
+describe('routerFor - nested resources', () => {
   beforeEach(() => clear());
 
   const paths = {
