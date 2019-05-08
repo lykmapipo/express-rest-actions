@@ -1,7 +1,17 @@
 import { isFunction } from 'lodash';
 import { mergeObjects } from '@lykmapipo/common';
 import { getString } from '@lykmapipo/env';
-import { app, Router } from '@lykmapipo/express-common';
+import {
+  all,
+  del,
+  get,
+  patch,
+  post,
+  put,
+  use,
+  app,
+  Router,
+} from '@lykmapipo/express-common';
 
 /**
  * @function getFor
@@ -27,12 +37,12 @@ import { app, Router } from '@lykmapipo/express-common';
 export const getFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { get } = options;
+  const { get: doGet } = options;
 
   // create http handler to get resources
   const httpGet = (request, response, next) => {
     // ensure service get
-    if (!isFunction(get)) {
+    if (!isFunction(doGet)) {
       return response.methodNotAllowed();
     }
 
@@ -50,7 +60,7 @@ export const getFor = optns => {
     };
 
     // invoke service get
-    return get(query, afterHttpGet);
+    return doGet(query, afterHttpGet);
   };
 
   // return http get handler
@@ -81,12 +91,12 @@ export const getFor = optns => {
 export const getByIdFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { getById } = options;
+  const { getById: doGetById } = options;
 
   // create http handler to get single resource
   const httpGetById = (request, response, next) => {
     // ensure service getById
-    if (!isFunction(getById)) {
+    if (!isFunction(doGetById)) {
       return response.methodNotAllowed();
     }
 
@@ -105,7 +115,7 @@ export const getByIdFor = optns => {
     };
 
     // invoke service getById
-    return getById(query, afterHttpGetById);
+    return doGetById(query, afterHttpGetById);
   };
 
   // return htt get by id handler
@@ -136,12 +146,12 @@ export const getByIdFor = optns => {
 export const postFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { post } = options;
+  const { post: doPost } = options;
 
   // create http handler to create single resource
   const httpPost = (request, response, next) => {
     // ensure service post
-    if (!isFunction(post)) {
+    if (!isFunction(doPost)) {
       return response.methodNotAllowed();
     }
 
@@ -159,7 +169,7 @@ export const postFor = optns => {
     };
 
     // invoke service post
-    return post(query, afterHttpPost);
+    return doPost(query, afterHttpPost);
   };
 
   // return http post handler
@@ -190,12 +200,12 @@ export const postFor = optns => {
 export const patchFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { patch } = options;
+  const { patch: doPatch } = options;
 
   // create http handler to patch single resource
   const httpPatch = (request, response, next) => {
     // ensure service patch
-    if (!isFunction(patch)) {
+    if (!isFunction(doPatch)) {
       return response.methodNotAllowed();
     }
 
@@ -214,7 +224,7 @@ export const patchFor = optns => {
     };
 
     // invoke service patch
-    return patch(query, afterHttpPatch);
+    return doPatch(query, afterHttpPatch);
   };
 
   // return http patch handler
@@ -245,12 +255,12 @@ export const patchFor = optns => {
 export const putFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { put } = options;
+  const { put: doPut } = options;
 
   // create http handler to put single resource
   const httpPut = (request, response, next) => {
     // ensure service put
-    if (!isFunction(put)) {
+    if (!isFunction(doPut)) {
       return response.methodNotAllowed();
     }
 
@@ -269,7 +279,7 @@ export const putFor = optns => {
     };
 
     // invoke service put
-    return put(query, afterHttpPut);
+    return doPut(query, afterHttpPut);
   };
 
   // return http put handler
@@ -301,12 +311,12 @@ export const putFor = optns => {
 export const deleteFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { del, soft = false } = options;
+  const { del: doDelete, soft = false } = options;
 
   // create http handler to delete single resource
   const httpDelete = (request, response, next) => {
     // ensure service delete
-    if (!isFunction(del)) {
+    if (!isFunction(doDelete)) {
       return response.methodNotAllowed();
     }
 
@@ -325,7 +335,7 @@ export const deleteFor = optns => {
     };
 
     // invoke service delete
-    return del(query, afterHttpDelete);
+    return doDelete(query, afterHttpDelete);
   };
 
   // return http put handler
@@ -385,4 +395,4 @@ export const routerFor = optns => {
   return router;
 };
 
-export { app, Router };
+export { all, del, get, patch, post, put, use, app, Router };
