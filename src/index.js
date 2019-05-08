@@ -377,19 +377,19 @@ export const routerFor = optns => {
   const options = mergeObjects(defaults, optns);
 
   // create paths
-  const PATH_SINGLE = `/${options.resource}/:id`;
-  const PATH_LIST = `/${options.resource}`;
+  const { pathSingle = `/${options.resource}/:id` } = options;
+  const { pathList = `/${options.resource}` } = options;
 
   // create versioned router
   const router = new Router(options);
 
   // bind http action handlers
-  router.get(PATH_LIST, getFor(options));
-  router.get(PATH_SINGLE, getByIdFor(options));
-  router.post(PATH_LIST, postFor(options));
-  router.patch(PATH_SINGLE, patchFor(options));
-  router.put(PATH_SINGLE, putFor(options));
-  router.delete(PATH_SINGLE, deleteFor(options));
+  router.get(pathList, getFor(options));
+  router.get(pathSingle, getByIdFor(options));
+  router.post(pathList, postFor(options));
+  router.patch(pathSingle, patchFor(options));
+  router.put(pathSingle, putFor(options));
+  router.delete(pathSingle, deleteFor(options));
 
   // return http resource router
   return router;
