@@ -10,6 +10,7 @@ import {
 import {
   app,
   getFor,
+  schemaFor,
   getByIdFor,
   postFor,
   patchFor,
@@ -36,6 +37,28 @@ describe('getFor', () => {
   it('should handle http GET /resource with no service', done => {
     app.get('/v1/users', getFor());
     testGet('/v1/users').expect(405, done);
+  });
+});
+
+describe('schemaFor', () => {
+  beforeEach(() => clear());
+
+  it('should handle http GET /resource/schema with provided service', done => {
+    const schema = {};
+    const getSchema = (query, cb) => cb(null, schema);
+    app.get('/v1/users/schema', schemaFor({ getSchema }));
+    testGet('/v1/users/schema')
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(schema);
+        done(error, body);
+      });
+  });
+
+  it('should handle http GET /resource/schema with no service', done => {
+    app.get('/v1/users/schema', schemaFor());
+    testGet('/v1/users/schema').expect(405, done);
   });
 });
 
