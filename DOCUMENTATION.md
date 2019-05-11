@@ -33,6 +33,41 @@ app.get('/v1/users', getFor({ get }));
 
 
 
+#### schemaFor(optns) 
+
+Create http get handler for schema of a given service options
+
+
+
+
+##### Parameters
+
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| optns | `Object`  | valid schemaFor options | &nbsp; |
+| optns.getSchema | `Function`  | valid service function to invoke when get schema | &nbsp; |
+
+
+
+
+##### Examples
+
+```javascript
+
+const { app, schemaFor } = require('@lykmapipo/express-rest-actions');
+
+const getSchema = (query, done) => done(null, { ... });
+app.get('/v1/users', schemaFor({ getSchema }));
+```
+
+
+##### Returns
+
+
+- `Function`  valid express middleware to handle get schema request
+
+
+
 #### getByIdFor(optns) 
 
 Create http getById handler for given service options
@@ -223,6 +258,7 @@ Create http resource router for given service options
 | optns | `Object`  | valid routerFor options | &nbsp; |
 | optns.resource | `String`  | valid resource name to be used as http path | &nbsp; |
 | optns.get | `Function`  | valid service function to invoke when get | &nbsp; |
+| optns.getSchema | `Function`  | valid service function to invoke when get schema | *Optional* |
 | optns.getById | `Function`  | valid service function to invoke when getById | &nbsp; |
 | optns.post | `Function`  | valid service function to invoke when post | &nbsp; |
 | optns.patch | `Function`  | valid service function to invoke when patch | &nbsp; |

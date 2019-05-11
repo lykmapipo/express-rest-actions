@@ -1,3 +1,16 @@
+#### 0.3.0 (2019-05-11)
+
+##### Chores
+
+* **deps:**
+  *  force latest version & audit fix ([38b80534](https://github.com/lykmapipo/express-rest-actions/commit/38b80534e9bf4f3af74faddd412a66d52af93856))
+  *  force latest version & audit fix ([3d69235a](https://github.com/lykmapipo/express-rest-actions/commit/3d69235a3829f7978e455dfc8fc4e04a73b62eee))
+
+##### New Features
+
+*  extend routerFor with schemaFor handler ([86daf702](https://github.com/lykmapipo/express-rest-actions/commit/86daf70236bfad6f59c2c0bda7961ebd80757bd6))
+*  implement schemaFor handler ([6d46fbe2](https://github.com/lykmapipo/express-rest-actions/commit/6d46fbe22b1655e741acc49f449c66a18c022093))
+
 #### 0.2.1 (2019-05-08)
 
 ##### Chores

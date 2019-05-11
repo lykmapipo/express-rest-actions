@@ -59,6 +59,61 @@ const getFor = optns => {
 };
 
 /**
+ * @function schemaFor
+ * @name schemaFor
+ * @description Create http get handler for schema of a given service options
+ * @param {Object} optns valid schemaFor options
+ * @param {Function} optns.getSchema valid service function to invoke when get
+ * schema
+ * @return {Function} valid express middleware to handle get schema request
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.3.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * const { app, schemaFor } = require('@lykmapipo/express-rest-actions');
+ *
+ * const getSchema = (query, done) => done(null, { ... });
+ * app.get('/v1/users', schemaFor({ getSchema }));
+ *
+ */
+const schemaFor = optns => {
+  // ensure options
+  const options = mergeObjects(optns);
+  const { getSchema: doGetSchema } = options;
+
+  // create http handler to get resource schema
+  const httpGetSchema = (request, response, next) => {
+    // ensure service getSchema
+    if (!isFunction(doGetSchema)) {
+      return response.methodNotAllowed();
+    }
+
+    // obtain mquery options
+    const query = mergeObjects(request.mquery);
+
+    // handle request
+    const afterHttpGetSchema = (error, results) => {
+      // handle error
+      if (error) {
+        return next(error);
+      }
+      // handle success
+      return response.ok(results);
+    };
+
+    // invoke service getSchema
+    return doGetSchema(query, afterHttpGetSchema);
+  };
+
+  // return http getSchema handler
+  return httpGetSchema;
+};
+
+/**
  * @function getByIdFor
  * @name getByIdFor
  * @description Create http getById handler for given service options
@@ -340,6 +395,8 @@ const deleteFor = optns => {
  * @param {Object} optns valid routerFor options
  * @param {String} optns.resource valid resource name to be used as http path
  * @param {Function} optns.get valid service function to invoke when get
+ * @param {Function} [optns.getSchema] valid service function to invoke when
+ * get schema
  * @param {Function} optns.getById valid service function to invoke when getById
  * @param {Function} optns.post valid service function to invoke when post
  * @param {Function} optns.patch valid service function to invoke when patch
@@ -370,12 +427,14 @@ const routerFor = optns => {
   // create paths
   const { pathSingle = `/${options.resource}/:id` } = options;
   const { pathList = `/${options.resource}` } = options;
+  const { pathSchema = `/${options.resource}/schema` } = options;
 
   // create versioned router
   const router = new Router(options);
 
   // bind http action handlers
   router.get(pathList, getFor(options));
+  router.get(pathSchema, schemaFor(options));
   router.get(pathSingle, getByIdFor(options));
   router.post(pathList, postFor(options));
   router.patch(pathSingle, patchFor(options));
@@ -386,4 +445,4 @@ const routerFor = optns => {
   return router;
 };
 
-export { deleteFor, getByIdFor, getFor, patchFor, postFor, putFor, routerFor };
+export { deleteFor, getByIdFor, getFor, patchFor, postFor, putFor, routerFor, schemaFor };

@@ -404,6 +404,8 @@ export const deleteFor = optns => {
  * @param {Object} optns valid routerFor options
  * @param {String} optns.resource valid resource name to be used as http path
  * @param {Function} optns.get valid service function to invoke when get
+ * @param {Function} [optns.getSchema] valid service function to invoke when
+ * get schema
  * @param {Function} optns.getById valid service function to invoke when getById
  * @param {Function} optns.post valid service function to invoke when post
  * @param {Function} optns.patch valid service function to invoke when patch
