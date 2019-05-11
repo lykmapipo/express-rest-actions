@@ -68,6 +68,47 @@ app.get('/v1/users', schemaFor({ getSchema }));
 
 
 
+#### downloadFor(optns) 
+
+Create http get handler for downloading of a given service options
+
+
+
+
+##### Parameters
+
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| optns | `Object`  | valid downloadFor options | &nbsp; |
+| optns.download | `Function`  | valid service to to invoke when downloading. It must return `readStream` which is `stream.Readable` and<br>`fileName` which is `String`. | &nbsp; |
+
+
+
+
+##### Examples
+
+```javascript
+
+const { createReadStream } = require('fs');
+const { app, downloadFor } = require('@lykmapipo/express-rest-actions');
+
+const download = (query, done) => {
+   const fileName = 'avatar.png';
+   const readStream = createReadStream('./avatar.png');
+   return done(null, { fileName, readStream });
+};
+
+app.get('/v1/files/avatar', downloadFor({ download }));
+```
+
+
+##### Returns
+
+
+- `Function`  valid express middleware to handle downloading request
+
+
+
 #### getByIdFor(optns) 
 
 Create http getById handler for given service options
@@ -259,6 +300,7 @@ Create http resource router for given service options
 | optns.resource | `String`  | valid resource name to be used as http path | &nbsp; |
 | optns.get | `Function`  | valid service function to invoke when get | &nbsp; |
 | optns.getSchema | `Function`  | valid service function to invoke when get schema | *Optional* |
+| optns.export | `Function`  | valid service function to invoke when get exports. It must return `readStream` which is `stream.Readable` and<br>`fileName` which is `String`. | *Optional* |
 | optns.getById | `Function`  | valid service function to invoke when getById | &nbsp; |
 | optns.post | `Function`  | valid service function to invoke when post | &nbsp; |
 | optns.patch | `Function`  | valid service function to invoke when patch | &nbsp; |

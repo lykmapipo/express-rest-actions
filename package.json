@@ -1,6 +1,6 @@
 {
   "name": "@lykmapipo/express-rest-actions",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Opinionated rest actions for express",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -84,7 +84,7 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "@lykmapipo/common": "^0.17.3",
+    "@lykmapipo/common": ">=0.17.3",
     "@lykmapipo/env": ">=0.7.5",
     "@lykmapipo/express-common": ">=0.17.1",
     "is-stream": ">=2.0.0",

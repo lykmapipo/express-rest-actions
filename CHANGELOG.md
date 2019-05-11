@@ -1,3 +1,10 @@
+#### 0.4.0 (2019-05-11)
+
+##### New Features
+
+*  add export handler on router for ([d97b7714](https://github.com/lykmapipo/express-rest-actions/commit/d97b77143047aae5264463bffea5f3c207038e5c))
+*  implement downloadFor handler ([b3dcfd5e](https://github.com/lykmapipo/express-rest-actions/commit/b3dcfd5e02dc63f7bc2605a56a8e41cbe5d4cdb3))
+
 #### 0.3.0 (2019-05-11)
 
 ##### Chores
