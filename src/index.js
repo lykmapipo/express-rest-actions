@@ -1,4 +1,5 @@
 import { isFunction } from 'lodash';
+import { readable as isReadableStream } from 'is-stream';
 import { mergeObjects } from '@lykmapipo/common';
 import { getString } from '@lykmapipo/env';
 import {
@@ -120,6 +121,80 @@ export const schemaFor = optns => {
 
   // return http getSchema handler
   return httpGetSchema;
+};
+
+/**
+ * @function downloadFor
+ * @name downloadFor
+ * @description Create http get handler for downloading of a given
+ * service options
+ * @param {Object} optns valid downloadFor options
+ * @param {Function} optns.download valid service to to invoke when
+ * downloading. It must return `readStream` which is `stream.Readable` and
+ * `fileName` which is `String`.
+ * @return {Function} valid express middleware to handle downloading request
+ * @author lally elias <lallyelias87@mail.com>
+ * @license MIT
+ * @since 0.3.0
+ * @version 0.1.0
+ * @static
+ * @public
+ * @example
+ *
+ * const { createReadStream } = require('fs');
+ * const { app, downloadFor } = require('@lykmapipo/express-rest-actions');
+ *
+ * const download = (query, done) => {
+ *    const fileName = 'avatar.png';
+ *    const readStream = createReadStream('./avatar.png');
+ *    return done(null, { fileName, readStream });
+ * };
+ *
+ * app.get('/v1/files/avatar', downloadFor({ download }));
+ *
+ */
+export const downloadFor = optns => {
+  // ensure options
+  const options = mergeObjects(optns);
+  const { download: doDownload, status = 200 } = options;
+
+  // create http handler to download
+  const httpDownload = (request, response, next) => {
+    // ensure service download and fileName provider
+    if (!isFunction(doDownload)) {
+      return response.methodNotAllowed();
+    }
+
+    // obtain mquery options
+    const query = mergeObjects(request.mquery);
+
+    // handle request
+    const afterHttpDownload = (error, results) => {
+      // handle error
+      if (error) {
+        return next(error);
+      }
+
+      // obtain download file name and stream
+      const { fileName, readStream } = results;
+
+      // ensure read stream
+      if (!isReadableStream(readStream)) {
+        return response.methodNotAllowed();
+      }
+
+      // handle success downloading
+      response.attachment(fileName);
+      response.status(status);
+      return readStream.pipe(response);
+    };
+
+    // invoke service download
+    return doDownload(query, afterHttpDownload);
+  };
+
+  // return http download handler
+  return httpDownload;
 };
 
 /**

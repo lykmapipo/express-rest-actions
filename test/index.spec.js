@@ -1,7 +1,9 @@
+import { createReadStream, readFileSync } from 'fs';
 import {
   clear,
   expect,
   testGet,
+  testDownload,
   testPost,
   testPatch,
   testPut,
@@ -11,6 +13,7 @@ import {
   app,
   getFor,
   schemaFor,
+  downloadFor,
   getByIdFor,
   postFor,
   patchFor,
@@ -59,6 +62,38 @@ describe('schemaFor', () => {
   it('should handle http GET /resource/schema with no service', done => {
     app.get('/v1/users/schema', schemaFor());
     testGet('/v1/users/schema').expect(405, done);
+  });
+});
+
+describe('downloadFor', () => {
+  beforeEach(() => clear());
+
+  it('should handle http GET /resource/download with provided service', done => {
+    const file = `${__dirname}/fixtures/test.txt`;
+    const fileContent = readFileSync(file).toString('base64');
+
+    const download = (query, cb) => {
+      const fileName = 'test.txt';
+      const readStream = createReadStream(file);
+      cb(null, { fileName, readStream });
+    };
+
+    app.get('/v1/users/downloads', downloadFor({ download }));
+
+    testDownload('/v1/users/downloads')
+      .expect(200)
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect('Content-Disposition', 'attachment; filename="test.txt"')
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body.toString('base64')).to.be.equal(fileContent);
+        done(error, body);
+      });
+  });
+
+  it('should handle http GET /resource/download with no service', done => {
+    app.get('/v1/users/download', downloadFor());
+    testDownload('/v1/users/download').expect(405, done);
   });
 });
 
