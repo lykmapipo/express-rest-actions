@@ -12,6 +12,7 @@ describe('routerFor - nested resources', () => {
     version: '1.0.0',
     ...paths,
     get: (query, cb) => cb(null, { data: [] }),
+    getSchema: (query, cb) => cb(null, {}),
     getById: (query, cb) => cb(null, {}),
     post: (body, cb) => cb(null, body),
     patch: (query, cb) => cb(null, {}),
@@ -23,6 +24,11 @@ describe('routerFor - nested resources', () => {
   it('should handle http GET /resource/:id/resource', done => {
     const { testGet } = testRouter(paths, router);
     testGet({ user: 1 }).expect(200, done);
+  });
+
+  it('should handle http GET /resource/:id/resource/schema', done => {
+    const { testGetSchema } = testRouter(paths, router);
+    testGetSchema({ user: 1 }).expect(200, done);
   });
 
   it('should handle http GET /resource/:id/resource/:id', done => {

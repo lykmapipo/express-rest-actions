@@ -8,6 +8,7 @@ describe('routerFor', () => {
     version: '1.0.0',
     resource: 'users',
     get: (query, cb) => cb(null, { data: [] }),
+    getSchema: (query, cb) => cb(null, {}),
     getById: (query, cb) => cb(null, {}),
     post: (body, cb) => cb(null, body),
     patch: (query, cb) => cb(null, {}),
@@ -19,6 +20,11 @@ describe('routerFor', () => {
   it('should handle http GET /resource', done => {
     const { testGet } = testRouter('users', router);
     testGet().expect(200, done);
+  });
+
+  it('should handle http GET /resource/schema', done => {
+    const { testGetSchema } = testRouter('users', router);
+    testGetSchema().expect(200, done);
   });
 
   it('should handle http GET /resource/:id', done => {

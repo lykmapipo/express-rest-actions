@@ -434,12 +434,14 @@ export const routerFor = optns => {
   // create paths
   const { pathSingle = `/${options.resource}/:id` } = options;
   const { pathList = `/${options.resource}` } = options;
+  const { pathSchema = `/${options.resource}/schema` } = options;
 
   // create versioned router
   const router = new Router(options);
 
   // bind http action handlers
   router.get(pathList, getFor(options));
+  router.get(pathSchema, schemaFor(options));
   router.get(pathSingle, getByIdFor(options));
   router.post(pathList, postFor(options));
   router.patch(pathSingle, patchFor(options));
