@@ -1,18 +1,28 @@
+import { createReadStream } from 'fs';
 import { clear, testRouter, faker } from '@lykmapipo/express-test-helpers';
 import { routerFor } from '../src/index';
 
 describe('routerFor - nested resources', () => {
   beforeEach(() => clear());
 
+  const file = `${__dirname}/fixtures/test.txt`;
+
   const paths = {
     pathSingle: '/users/:user/comments/:id',
     pathList: '/users/:user/comments',
+    pathSchema: '/users/:user/comments/schema',
+    pathExport: '/users/:user/comments/export',
   };
   const options = {
     version: '1.0.0',
     ...paths,
     get: (query, cb) => cb(null, { data: [] }),
     getSchema: (query, cb) => cb(null, {}),
+    export: (query, cb) => {
+      const fileName = 'test.txt';
+      const readStream = createReadStream(file);
+      cb(null, { fileName, readStream });
+    },
     getById: (query, cb) => cb(null, {}),
     post: (body, cb) => cb(null, body),
     patch: (query, cb) => cb(null, {}),
@@ -29,6 +39,14 @@ describe('routerFor - nested resources', () => {
   it('should handle http GET /resource/:id/resource/schema', done => {
     const { testGetSchema } = testRouter(paths, router);
     testGetSchema({ user: 1 }).expect(200, done);
+  });
+
+  it('should handle http GET /resource/:id/resource/export', done => {
+    const { testGetExport } = testRouter(paths, router);
+    testGetExport({ user: 1 })
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect('Content-Disposition', 'attachment; filename="test.txt"')
+      .expect(200, done);
   });
 
   it('should handle http GET /resource/:id/resource/:id', done => {

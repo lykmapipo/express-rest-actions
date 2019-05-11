@@ -481,6 +481,9 @@ export const deleteFor = optns => {
  * @param {Function} optns.get valid service function to invoke when get
  * @param {Function} [optns.getSchema] valid service function to invoke when
  * get schema
+ * @param {Function} [optns.export] valid service function to invoke when get
+ * exports. It must return `readStream` which is `stream.Readable` and
+ * `fileName` which is `String`.
  * @param {Function} optns.getById valid service function to invoke when getById
  * @param {Function} optns.post valid service function to invoke when post
  * @param {Function} optns.patch valid service function to invoke when patch
@@ -508,10 +511,14 @@ export const routerFor = optns => {
   const defaults = { version: getString('API_VERSION', '1.0.0'), soft: false };
   const options = mergeObjects(defaults, optns);
 
+  // normalize download and export handler
+  options.download = options.download || options.export;
+
   // create paths
   const { pathSingle = `/${options.resource}/:id` } = options;
   const { pathList = `/${options.resource}` } = options;
   const { pathSchema = `/${options.resource}/schema` } = options;
+  const { pathExport = `/${options.resource}/export` } = options;
 
   // create versioned router
   const router = new Router(options);
@@ -519,6 +526,7 @@ export const routerFor = optns => {
   // bind http action handlers
   router.get(pathList, getFor(options));
   router.get(pathSchema, schemaFor(options));
+  router.get(pathExport, downloadFor(options));
   router.get(pathSingle, getByIdFor(options));
   router.post(pathList, postFor(options));
   router.patch(pathSingle, patchFor(options));

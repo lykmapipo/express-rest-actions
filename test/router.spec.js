@@ -1,14 +1,22 @@
+import { createReadStream } from 'fs';
 import { clear, testRouter, faker } from '@lykmapipo/express-test-helpers';
 import { routerFor } from '../src/index';
 
 describe('routerFor', () => {
   beforeEach(() => clear());
 
+  const file = `${__dirname}/fixtures/test.txt`;
+
   const options = {
     version: '1.0.0',
     resource: 'users',
     get: (query, cb) => cb(null, { data: [] }),
     getSchema: (query, cb) => cb(null, {}),
+    export: (query, cb) => {
+      const fileName = 'test.txt';
+      const readStream = createReadStream(file);
+      cb(null, { fileName, readStream });
+    },
     getById: (query, cb) => cb(null, {}),
     post: (body, cb) => cb(null, body),
     patch: (query, cb) => cb(null, {}),
@@ -25,6 +33,14 @@ describe('routerFor', () => {
   it('should handle http GET /resource/schema', done => {
     const { testGetSchema } = testRouter('users', router);
     testGetSchema().expect(200, done);
+  });
+
+  it('should handle http GET /resource/export', done => {
+    const { testGetExport } = testRouter('users', router);
+    testGetExport()
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect('Content-Disposition', 'attachment; filename="test.txt"')
+      .expect(200, done);
   });
 
   it('should handle http GET /resource/:id', done => {
