@@ -58,7 +58,7 @@ export const getFor = optns => {
     }
 
     // obtain get options
-    const query = mergeObjects(request.mquery);
+    const query = mergeObjects(mquery);
 
     // handle request
     const afterHttpGet = (error, results) => {
@@ -123,7 +123,7 @@ export const schemaFor = optns => {
     }
 
     // obtain get options
-    const query = mergeObjects(request.mquery);
+    const query = mergeObjects(mquery);
 
     // handle request
     const afterHttpGetSchema = (error, results) => {
@@ -195,7 +195,7 @@ export const downloadFor = optns => {
     }
 
     // obtain get options
-    const query = mergeObjects(request.mquery);
+    const query = mergeObjects(mquery);
 
     // handle request
     const afterHttpDownload = (error, results) => {
@@ -232,6 +232,8 @@ export const downloadFor = optns => {
  * @description Create http getById handler for given service options
  * @param {Object} optns valid getByIdFor options
  * @param {Function} optns.getById valid service function to invoke when getById
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle get by id request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -250,7 +252,7 @@ export const downloadFor = optns => {
 export const getByIdFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { getById: doGetById } = options;
+  const { getById: doGetById, filterParams = true } = options;
 
   // create http handler to get single resource
   const httpGetById = (request, response, next) => {
@@ -259,9 +261,17 @@ export const getByIdFor = optns => {
       return response.methodNotAllowed();
     }
 
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(extraParams, mquery.filter);
+    }
+
     // obtain mquery options and id path param
-    const { id } = request.params || {};
-    const query = mergeObjects(request.mquery, { _id: id, id });
+    const query = mergeObjects(mquery, { _id: id, id });
 
     // handle request
     const afterHttpGetById = (error, results) => {
