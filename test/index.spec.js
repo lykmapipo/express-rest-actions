@@ -211,6 +211,22 @@ describe('postFor', () => {
     app.post('/v1/users', postFor());
     testPost('/v1/users', {}).expect(405, done);
   });
+
+  it('should POST /resource with provided service with params', done => {
+    const results = {};
+    const post = (body, cb) => {
+      expect(body.group).to.exist.and.be.eql('testers');
+      cb(null, results);
+    };
+    app.post('/v1/users/:group', postFor({ post }));
+    testPost('/v1/users/testers', results)
+      .expect(201)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(results);
+        done(error, body);
+      });
+  });
 });
 
 describe('patchFor', () => {

@@ -317,7 +317,7 @@ export const getByIdFor = optns => {
 export const postFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { post: doPost } = options;
+  const { post: doPost, bodyParams = true } = options;
 
   // create http handler to create single resource
   const httpPost = (request, response, next) => {
@@ -326,8 +326,16 @@ export const postFor = optns => {
       return response.methodNotAllowed();
     }
 
+    // obtain params and body from request
+    const { params = {}, body = {} } = request;
+
     // obtain request body
-    const query = mergeObjects(request.body);
+    let query = mergeObjects(body);
+
+    // extend body with params
+    if (bodyParams) {
+      query = mergeObjects(params, body);
+    }
 
     // handle request
     const afterHttpPost = (error, results) => {
