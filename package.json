@@ -1,6 +1,6 @@
 {
   "name": "@lykmapipo/express-rest-actions",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Opinionated rest actions for express",
   "main": "lib/index.js",
   "module": "es/index.js",
