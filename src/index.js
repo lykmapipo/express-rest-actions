@@ -85,6 +85,8 @@ export const getFor = optns => {
  * @param {Object} optns valid schemaFor options
  * @param {Function} optns.getSchema valid service function to invoke when get
  * schema
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle get schema request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -103,7 +105,7 @@ export const getFor = optns => {
 export const schemaFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { getSchema: doGetSchema } = options;
+  const { getSchema: doGetSchema, filterParams = true } = options;
 
   // create http handler to get resource schema
   const httpGetSchema = (request, response, next) => {
@@ -112,7 +114,15 @@ export const schemaFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain mquery options
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
+
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(params, mquery.filter);
+    }
+
+    // obtain get options
     const query = mergeObjects(request.mquery);
 
     // handle request

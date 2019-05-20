@@ -79,6 +79,22 @@ describe('schemaFor', () => {
     app.get('/v1/users/schema', schemaFor());
     testGet('/v1/users/schema').expect(405, done);
   });
+
+  it('should GET /resource/schema with provided service and params', done => {
+    const schema = {};
+    const getSchema = ({ filter }, cb) => {
+      expect(filter).to.exist.and.be.eql({ group: 'testers' });
+      cb(null, schema);
+    };
+    app.get('/v1/users/:group/schema', schemaFor({ getSchema }));
+    testGet('/v1/users/testers/schema')
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(schema);
+        done(error, body);
+      });
+  });
 });
 
 describe('downloadFor', () => {
