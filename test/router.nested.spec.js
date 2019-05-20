@@ -31,17 +31,17 @@ describe('routerFor - nested resources', () => {
   };
   const router = routerFor(options);
 
-  it('should handle http GET /resource/:id/resource', done => {
+  it('should GET /resource/:id/resource', done => {
     const { testGet } = testRouter(paths, router);
     testGet({ user: 1 }).expect(200, done);
   });
 
-  it('should handle http GET /resource/:id/resource/schema', done => {
+  it('should GET /resource/:id/resource/schema', done => {
     const { testGetSchema } = testRouter(paths, router);
     testGetSchema({ user: 1 }).expect(200, done);
   });
 
-  it('should handle http GET /resource/:id/resource/export', done => {
+  it('should GET /resource/:id/resource/export', done => {
     const { testGetExport } = testRouter(paths, router);
     testGetExport({ user: 1 })
       .expect('Content-Type', 'text/plain; charset=utf-8')
@@ -49,17 +49,17 @@ describe('routerFor - nested resources', () => {
       .expect(200, done);
   });
 
-  it('should handle http GET /resource/:id/resource/:id', done => {
+  it('should GET /resource/:id/resource/:id', done => {
     const { testGet } = testRouter(paths, router);
     testGet({ user: 1, id: 1 }).expect(200, done);
   });
 
-  it('should handle http POST /resource/:id/resource', done => {
+  it('should POST /resource/:id/resource', done => {
     const { testPost } = testRouter(paths, router);
     testPost({ user: 1, name: faker.name.findName() }).expect(201, done);
   });
 
-  it('should handle http PATCH /resource/:id/resource/:id', done => {
+  it('should PATCH /resource/:id/resource/:id', done => {
     const { testPatch } = testRouter(paths, router);
     testPatch({ user: 1, id: 1 }, { name: faker.name.findName() }).expect(
       200,
@@ -67,7 +67,7 @@ describe('routerFor - nested resources', () => {
     );
   });
 
-  it('should handle http PUT /resource/:id/resource/:id', done => {
+  it('should PUT /resource/:id/resource/:id', done => {
     const { testPut } = testRouter(paths, router);
     testPut({ user: 1, id: 1 }, { name: faker.name.findName() }).expect(
       200,
@@ -75,7 +75,7 @@ describe('routerFor - nested resources', () => {
     );
   });
 
-  it('should handle http DELETE /resource/:id/resource/:id', done => {
+  it('should DELETE /resource/:id/resource/:id', done => {
     const { testDelete } = testRouter(paths, router);
     testDelete({ user: 1, id: 1 }).expect(200, done);
   });
