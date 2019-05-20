@@ -297,6 +297,8 @@ export const getByIdFor = optns => {
  * @description Create http post handler for given service options
  * @param {Object} optns valid postFor options
  * @param {Function} optns.post valid service function to invoke when post
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle post request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -351,6 +353,10 @@ export const postFor = optns => {
  * @description Create http patch handler for given service options
  * @param {Object} optns valid patchFor options
  * @param {Function} optns.patch valid service function to invoke when patch
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle patch request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -406,6 +412,10 @@ export const patchFor = optns => {
  * @description Create http put handler for given service options
  * @param {Object} optns valid putFor options
  * @param {Function} optns.put valid service function to invoke when put
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle put request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -462,6 +472,8 @@ export const putFor = optns => {
  * @param {Object} optns valid deleteFor options
  * @param {Function} optns.del valid service function to invoke when delete
  * @param {Boolean} [optns.soft=false] whether to invoke soft delete
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle delete request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -530,6 +542,10 @@ export const deleteFor = optns => {
  * @param {Function} optns.del valid service function to invoke when delete
  * @param {Boolean} [optns.soft=false] whether to invoke soft router
  * @param {String} [optns.version='1.0.0'] valid api version to append on path
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle router request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
