@@ -152,6 +152,8 @@ export const schemaFor = optns => {
  * @param {Function} optns.download valid service to to invoke when
  * downloading. It must return `readStream` which is `stream.Readable` and
  * `fileName` which is `String`.
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle downloading request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -176,7 +178,7 @@ export const schemaFor = optns => {
 export const downloadFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { download: doDownload, status = 200 } = options;
+  const { download: doDownload, status = 200, filterParams = true } = options;
 
   // create http handler to download
   const httpDownload = (request, response, next) => {
@@ -184,8 +186,15 @@ export const downloadFor = optns => {
     if (!isFunction(doDownload)) {
       return response.methodNotAllowed();
     }
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
 
-    // obtain mquery options
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(params, mquery.filter);
+    }
+
+    // obtain get options
     const query = mergeObjects(request.mquery);
 
     // handle request

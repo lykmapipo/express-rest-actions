@@ -127,6 +127,30 @@ describe('downloadFor', () => {
     app.get('/v1/users/download', downloadFor());
     testDownload('/v1/users/download').expect(405, done);
   });
+
+  it('should GET /resource/download with provided service with params', done => {
+    const file = `${__dirname}/fixtures/test.txt`;
+    const fileContent = readFileSync(file).toString('base64');
+
+    const download = ({ filter }, cb) => {
+      expect(filter).to.exist.and.be.eql({ group: 'testers' });
+      const fileName = 'test.txt';
+      const readStream = createReadStream(file);
+      cb(null, { fileName, readStream });
+    };
+
+    app.get('/v1/users/:group/downloads', downloadFor({ download }));
+
+    testDownload('/v1/users/testers/downloads')
+      .expect(200)
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect('Content-Disposition', 'attachment; filename="test.txt"')
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body.toString('base64')).to.be.equal(fileContent);
+        done(error, body);
+      });
+  });
 });
 
 describe('getByIdFor', () => {
