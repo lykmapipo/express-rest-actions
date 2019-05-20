@@ -20,6 +20,8 @@ import {
  * @description Create http get handler for given service options
  * @param {Object} optns valid getFor options
  * @param {Function} optns.get valid service function to invoke when get
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle get request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -38,7 +40,7 @@ import {
 export const getFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { get: doGet } = options;
+  const { get: doGet, filterParams = true } = options;
 
   // create http handler to get resources
   const httpGet = (request, response, next) => {
@@ -47,7 +49,15 @@ export const getFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain mquery options
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
+
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(params, mquery.filter);
+    }
+
+    // obtain get options
     const query = mergeObjects(request.mquery);
 
     // handle request
