@@ -383,7 +383,7 @@ export const postFor = optns => {
 export const patchFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { patch: doPatch } = options;
+  const { patch: doPatch, filterParams = true, bodyParams = true } = options;
 
   // create http handler to patch single resource
   const httpPatch = (request, response, next) => {
@@ -392,9 +392,25 @@ export const patchFor = optns => {
       return response.methodNotAllowed();
     }
 
+    // obtain params and mquery from request
+    const { params = {}, body = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // obtain request body
+    let query = mergeObjects(body);
+
+    // extend body with params
+    if (bodyParams) {
+      query = mergeObjects(extraParams, body);
+    }
+
+    // extend filter with params
+    if (filterParams) {
+      query.filter = mergeObjects(extraParams);
+    }
+
     // obtain request body and id path param
-    const { id } = request.params || {};
-    const query = mergeObjects(request.body, { _id: id, id });
+    query = mergeObjects(query, { _id: id, id });
 
     // handle request
     const afterHttpPatch = (error, results) => {

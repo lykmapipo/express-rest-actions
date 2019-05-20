@@ -249,6 +249,23 @@ describe('patchFor', () => {
     app.patch('/v1/users/:id', patchFor());
     testPatch('/v1/users/1', {}).expect(405, done);
   });
+
+  it('should PATCH /resource/:id with provided service with params', done => {
+    const results = {};
+    const patch = (body, cb) => {
+      expect(body.group).to.exist.and.be.eql('testers');
+      expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
+      cb(null, results);
+    };
+    app.patch('/v1/users/:group/:id', patchFor({ patch }));
+    testPatch('/v1/users/testers/1', results)
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(results);
+        done(error, body);
+      });
+  });
 });
 
 describe('putFor', () => {
