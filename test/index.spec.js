@@ -288,6 +288,23 @@ describe('putFor', () => {
     app.put('/v1/users/:id', putFor());
     testPut('/v1/users/1', {}).expect(405, done);
   });
+
+  it('should PUT /resource/:id with provided service with params', done => {
+    const results = {};
+    const put = (body, cb) => {
+      expect(body.group).to.exist.and.be.eql('testers');
+      expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
+      cb(null, results);
+    };
+    app.put('/v1/users/:group/:id', putFor({ put }));
+    testPut('/v1/users/testers/1', results)
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(results);
+        done(error, body);
+      });
+  });
 });
 
 describe('deleteFor', () => {
@@ -309,5 +326,21 @@ describe('deleteFor', () => {
   it('should DELETE /resource/:id with no service', done => {
     app.delete('/v1/users/:id', deleteFor());
     testDelete('/v1/users/1').expect(405, done);
+  });
+
+  it('should DELETE /resource/:id with provided service with params', done => {
+    const results = {};
+    const del = (body, cb) => {
+      expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
+      cb(null, results);
+    };
+    app.delete('/v1/users/:group/:id', deleteFor({ del }));
+    testDelete('/v1/users/testers/1')
+      .expect(200)
+      .end((error, { body }) => {
+        expect(error).to.not.exist;
+        expect(body).to.be.eql(results);
+        done(error, body);
+      });
   });
 });

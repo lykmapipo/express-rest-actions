@@ -329,7 +329,7 @@ export const postFor = optns => {
     // obtain params and body from request
     const { params = {}, body = {} } = request;
 
-    // obtain request body
+    // prepare request body
     let query = mergeObjects(body);
 
     // extend body with params
@@ -392,11 +392,11 @@ export const patchFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain params and mquery from request
+    // obtain params and body from request
     const { params = {}, body = {} } = request;
     const { id, ...extraParams } = params;
 
-    // obtain request body
+    // prepare request body
     let query = mergeObjects(body);
 
     // extend body with params
@@ -409,7 +409,7 @@ export const patchFor = optns => {
       query.filter = mergeObjects(extraParams);
     }
 
-    // obtain request body and id path param
+    // pack request body and id path param
     query = mergeObjects(query, { _id: id, id });
 
     // handle request
@@ -458,7 +458,7 @@ export const patchFor = optns => {
 export const putFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { put: doPut } = options;
+  const { put: doPut, filterParams = true, bodyParams = true } = options;
 
   // create http handler to put single resource
   const httpPut = (request, response, next) => {
@@ -467,9 +467,25 @@ export const putFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body and id path param
-    const { id } = request.params || {};
-    const query = mergeObjects(request.body, { _id: id, id });
+    // obtain params and body from request
+    const { params = {}, body = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // prepare request body
+    let query = mergeObjects(body);
+
+    // extend body with params
+    if (bodyParams) {
+      query = mergeObjects(extraParams, body);
+    }
+
+    // extend filter with params
+    if (filterParams) {
+      query.filter = mergeObjects(extraParams);
+    }
+
+    // pack request body and id path param
+    query = mergeObjects(query, { _id: id, id });
 
     // handle request
     const afterHttpPut = (error, results) => {
@@ -516,7 +532,7 @@ export const putFor = optns => {
 export const deleteFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { del: doDelete, soft = false } = options;
+  const { del: doDelete, soft = false, filterParams = true } = options;
 
   // create http handler to delete single resource
   const httpDelete = (request, response, next) => {
@@ -525,9 +541,17 @@ export const deleteFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body and id path param
-    const { id } = request.params || {};
+    // obtain params and mquery from request
+    const { params = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // prepare delete options
     const query = mergeObjects({ _id: id, id, soft });
+
+    // extend filter with params
+    if (filterParams) {
+      query.filter = mergeObjects(extraParams);
+    }
 
     // handle request
     const afterHttpDelete = (error, results) => {
