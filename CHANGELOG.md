@@ -1,3 +1,23 @@
+#### 0.5.0 (2019-05-20)
+
+##### New Features
+
+* **delete-for:**  append path params into request filter ([bde814e1](https://github.com/lykmapipo/express-rest-actions/commit/bde814e16df8826c2406f70995d7e8766c4422f1))
+* **patch-for:**  append path params into request body and filter ([c6fe778f](https://github.com/lykmapipo/express-rest-actions/commit/c6fe778fe3a3c860fb7b0f685c48fb12d703afed))
+* **post-for:**  append path params into request body ([f6fec7b4](https://github.com/lykmapipo/express-rest-actions/commit/f6fec7b48839c4670a16daf70f7c3bfb6c6276cd))
+* **get-by-id-for:**  append path params into mquery filter ([b686521e](https://github.com/lykmapipo/express-rest-actions/commit/b686521e9bea92cdf3db27fa00ef24d19bdce4d8))
+* **dowloader-for:**  append path params into mquery filter ([afab57f3](https://github.com/lykmapipo/express-rest-actions/commit/afab57f3affd6cd8ffcf6474470dfa0035927280))
+* **schema-for:**  append path params into mquery filter ([e0b94940](https://github.com/lykmapipo/express-rest-actions/commit/e0b949409ab7d05321ac7b78fdd61419c04c1990))
+*  append path params into mquery filter ([8d9be721](https://github.com/lykmapipo/express-rest-actions/commit/8d9be7215a537d94cbdcdac7033875999a106fcf))
+
+##### Code Style Changes
+
+*  add filterParams and bodyParams options descriptions ([a12f057b](https://github.com/lykmapipo/express-rest-actions/commit/a12f057bc9a304526000f410e626214d511f4fde))
+
+##### Tests
+
+*  improve test cases titles ([064a3ae6](https://github.com/lykmapipo/express-rest-actions/commit/064a3ae63847ce03f06e6527d542dfba86954548))
+
 #### 0.4.2 (2019-05-20)
 
 ##### Chores

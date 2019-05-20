@@ -11,6 +11,8 @@ export { Router, all, app, del, get, patch, post, put, use } from '@lykmapipo/ex
  * @description Create http get handler for given service options
  * @param {Object} optns valid getFor options
  * @param {Function} optns.get valid service function to invoke when get
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle get request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -29,7 +31,7 @@ export { Router, all, app, del, get, patch, post, put, use } from '@lykmapipo/ex
 const getFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { get: doGet } = options;
+  const { get: doGet, filterParams = true } = options;
 
   // create http handler to get resources
   const httpGet = (request, response, next) => {
@@ -38,8 +40,16 @@ const getFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain mquery options
-    const query = mergeObjects(request.mquery);
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
+
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(params, mquery.filter);
+    }
+
+    // obtain get options
+    const query = mergeObjects(mquery);
 
     // handle request
     const afterHttpGet = (error, results) => {
@@ -66,6 +76,8 @@ const getFor = optns => {
  * @param {Object} optns valid schemaFor options
  * @param {Function} optns.getSchema valid service function to invoke when get
  * schema
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle get schema request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -84,7 +96,7 @@ const getFor = optns => {
 const schemaFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { getSchema: doGetSchema } = options;
+  const { getSchema: doGetSchema, filterParams = true } = options;
 
   // create http handler to get resource schema
   const httpGetSchema = (request, response, next) => {
@@ -93,8 +105,16 @@ const schemaFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain mquery options
-    const query = mergeObjects(request.mquery);
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
+
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(params, mquery.filter);
+    }
+
+    // obtain get options
+    const query = mergeObjects(mquery);
 
     // handle request
     const afterHttpGetSchema = (error, results) => {
@@ -123,6 +143,8 @@ const schemaFor = optns => {
  * @param {Function} optns.download valid service to to invoke when
  * downloading. It must return `readStream` which is `stream.Readable` and
  * `fileName` which is `String`.
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle downloading request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -147,7 +169,7 @@ const schemaFor = optns => {
 const downloadFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { download: doDownload, status = 200 } = options;
+  const { download: doDownload, status = 200, filterParams = true } = options;
 
   // create http handler to download
   const httpDownload = (request, response, next) => {
@@ -155,9 +177,16 @@ const downloadFor = optns => {
     if (!isFunction(doDownload)) {
       return response.methodNotAllowed();
     }
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
 
-    // obtain mquery options
-    const query = mergeObjects(request.mquery);
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(params, mquery.filter);
+    }
+
+    // obtain get options
+    const query = mergeObjects(mquery);
 
     // handle request
     const afterHttpDownload = (error, results) => {
@@ -194,6 +223,8 @@ const downloadFor = optns => {
  * @description Create http getById handler for given service options
  * @param {Object} optns valid getByIdFor options
  * @param {Function} optns.getById valid service function to invoke when getById
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle get by id request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -212,7 +243,7 @@ const downloadFor = optns => {
 const getByIdFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { getById: doGetById } = options;
+  const { getById: doGetById, filterParams = true } = options;
 
   // create http handler to get single resource
   const httpGetById = (request, response, next) => {
@@ -221,9 +252,17 @@ const getByIdFor = optns => {
       return response.methodNotAllowed();
     }
 
+    // obtain params and mquery from request
+    const { params = {}, mquery = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // extend filter with params
+    if (filterParams) {
+      mquery.filter = mergeObjects(extraParams, mquery.filter);
+    }
+
     // obtain mquery options and id path param
-    const { id } = request.params || {};
-    const query = mergeObjects(request.mquery, { _id: id, id });
+    const query = mergeObjects(mquery, { _id: id, id });
 
     // handle request
     const afterHttpGetById = (error, results) => {
@@ -249,6 +288,8 @@ const getByIdFor = optns => {
  * @description Create http post handler for given service options
  * @param {Object} optns valid postFor options
  * @param {Function} optns.post valid service function to invoke when post
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle post request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -267,7 +308,7 @@ const getByIdFor = optns => {
 const postFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { post: doPost } = options;
+  const { post: doPost, bodyParams = true } = options;
 
   // create http handler to create single resource
   const httpPost = (request, response, next) => {
@@ -276,8 +317,16 @@ const postFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body
-    const query = mergeObjects(request.body);
+    // obtain params and body from request
+    const { params = {}, body = {} } = request;
+
+    // prepare request body
+    let query = mergeObjects(body);
+
+    // extend body with params
+    if (bodyParams) {
+      query = mergeObjects(params, body);
+    }
 
     // handle request
     const afterHttpPost = (error, results) => {
@@ -303,6 +352,10 @@ const postFor = optns => {
  * @description Create http patch handler for given service options
  * @param {Object} optns valid patchFor options
  * @param {Function} optns.patch valid service function to invoke when patch
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle patch request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -321,7 +374,7 @@ const postFor = optns => {
 const patchFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { patch: doPatch } = options;
+  const { patch: doPatch, filterParams = true, bodyParams = true } = options;
 
   // create http handler to patch single resource
   const httpPatch = (request, response, next) => {
@@ -330,9 +383,25 @@ const patchFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body and id path param
-    const { id } = request.params || {};
-    const query = mergeObjects(request.body, { _id: id, id });
+    // obtain params and body from request
+    const { params = {}, body = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // prepare request body
+    let query = mergeObjects(body);
+
+    // extend body with params
+    if (bodyParams) {
+      query = mergeObjects(extraParams, body);
+    }
+
+    // extend filter with params
+    if (filterParams) {
+      query.filter = mergeObjects(extraParams);
+    }
+
+    // pack request body and id path param
+    query = mergeObjects(query, { _id: id, id });
 
     // handle request
     const afterHttpPatch = (error, results) => {
@@ -358,6 +427,10 @@ const patchFor = optns => {
  * @description Create http put handler for given service options
  * @param {Object} optns valid putFor options
  * @param {Function} optns.put valid service function to invoke when put
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle put request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -376,7 +449,7 @@ const patchFor = optns => {
 const putFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { put: doPut } = options;
+  const { put: doPut, filterParams = true, bodyParams = true } = options;
 
   // create http handler to put single resource
   const httpPut = (request, response, next) => {
@@ -385,9 +458,25 @@ const putFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body and id path param
-    const { id } = request.params || {};
-    const query = mergeObjects(request.body, { _id: id, id });
+    // obtain params and body from request
+    const { params = {}, body = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // prepare request body
+    let query = mergeObjects(body);
+
+    // extend body with params
+    if (bodyParams) {
+      query = mergeObjects(extraParams, body);
+    }
+
+    // extend filter with params
+    if (filterParams) {
+      query.filter = mergeObjects(extraParams);
+    }
+
+    // pack request body and id path param
+    query = mergeObjects(query, { _id: id, id });
 
     // handle request
     const afterHttpPut = (error, results) => {
@@ -414,6 +503,8 @@ const putFor = optns => {
  * @param {Object} optns valid deleteFor options
  * @param {Function} optns.del valid service function to invoke when delete
  * @param {Boolean} [optns.soft=false] whether to invoke soft delete
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
  * @return {Function} valid express middleware to handle delete request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT
@@ -432,7 +523,7 @@ const putFor = optns => {
 const deleteFor = optns => {
   // ensure options
   const options = mergeObjects(optns);
-  const { del: doDelete, soft = false } = options;
+  const { del: doDelete, soft = false, filterParams = true } = options;
 
   // create http handler to delete single resource
   const httpDelete = (request, response, next) => {
@@ -441,9 +532,17 @@ const deleteFor = optns => {
       return response.methodNotAllowed();
     }
 
-    // obtain request body and id path param
-    const { id } = request.params || {};
+    // obtain params and mquery from request
+    const { params = {} } = request;
+    const { id, ...extraParams } = params;
+
+    // prepare delete options
     const query = mergeObjects({ _id: id, id, soft });
+
+    // extend filter with params
+    if (filterParams) {
+      query.filter = mergeObjects(extraParams);
+    }
 
     // handle request
     const afterHttpDelete = (error, results) => {
@@ -482,6 +581,10 @@ const deleteFor = optns => {
  * @param {Function} optns.del valid service function to invoke when delete
  * @param {Boolean} [optns.soft=false] whether to invoke soft router
  * @param {String} [optns.version='1.0.0'] valid api version to append on path
+ * @param {Boolean} [optns.filterParams=true] whether to merge params into
+ * filter
+ * @param {Boolean} [optns.bodyParams=true] whether to merge params into
+ * body
  * @return {Function} valid express middleware to handle router request
  * @author lally elias <lallyelias87@mail.com>
  * @license MIT

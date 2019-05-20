@@ -11,6 +11,7 @@ Create http get handler for given service options
 | ---- | ---- | ----------- | -------- |
 | optns | `Object`  | valid getFor options | &nbsp; |
 | optns.get | `Function`  | valid service function to invoke when get | &nbsp; |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
 
 
 
@@ -46,6 +47,7 @@ Create http get handler for schema of a given service options
 | ---- | ---- | ----------- | -------- |
 | optns | `Object`  | valid schemaFor options | &nbsp; |
 | optns.getSchema | `Function`  | valid service function to invoke when get schema | &nbsp; |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
 
 
 
@@ -81,6 +83,7 @@ Create http get handler for downloading of a given service options
 | ---- | ---- | ----------- | -------- |
 | optns | `Object`  | valid downloadFor options | &nbsp; |
 | optns.download | `Function`  | valid service to to invoke when downloading. It must return `readStream` which is `stream.Readable` and<br>`fileName` which is `String`. | &nbsp; |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
 
 
 
@@ -122,6 +125,7 @@ Create http getById handler for given service options
 | ---- | ---- | ----------- | -------- |
 | optns | `Object`  | valid getByIdFor options | &nbsp; |
 | optns.getById | `Function`  | valid service function to invoke when getById | &nbsp; |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
 
 
 
@@ -157,6 +161,7 @@ Create http post handler for given service options
 | ---- | ---- | ----------- | -------- |
 | optns | `Object`  | valid postFor options | &nbsp; |
 | optns.post | `Function`  | valid service function to invoke when post | &nbsp; |
+| optns.bodyParams&#x3D;true | `Boolean`  | whether to merge params into body | *Optional* |
 
 
 
@@ -192,6 +197,8 @@ Create http patch handler for given service options
 | ---- | ---- | ----------- | -------- |
 | optns | `Object`  | valid patchFor options | &nbsp; |
 | optns.patch | `Function`  | valid service function to invoke when patch | &nbsp; |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
+| optns.bodyParams&#x3D;true | `Boolean`  | whether to merge params into body | *Optional* |
 
 
 
@@ -227,6 +234,8 @@ Create http put handler for given service options
 | ---- | ---- | ----------- | -------- |
 | optns | `Object`  | valid putFor options | &nbsp; |
 | optns.put | `Function`  | valid service function to invoke when put | &nbsp; |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
+| optns.bodyParams&#x3D;true | `Boolean`  | whether to merge params into body | *Optional* |
 
 
 
@@ -263,6 +272,7 @@ Create http delete handler for given service options
 | optns | `Object`  | valid deleteFor options | &nbsp; |
 | optns.del | `Function`  | valid service function to invoke when delete | &nbsp; |
 | optns.soft&#x3D;false | `Boolean`  | whether to invoke soft delete | *Optional* |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
 
 
 
@@ -308,6 +318,8 @@ Create http resource router for given service options
 | optns.del | `Function`  | valid service function to invoke when delete | &nbsp; |
 | optns.soft&#x3D;false | `Boolean`  | whether to invoke soft router | *Optional* |
 | optns.version&#x3D;&#x27;1.0.0&#x27; | `String`  | valid api version to append on path | *Optional* |
+| optns.filterParams&#x3D;true | `Boolean`  | whether to merge params into filter | *Optional* |
+| optns.bodyParams&#x3D;true | `Boolean`  | whether to merge params into body | *Optional* |
 
 
 
