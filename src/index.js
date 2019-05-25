@@ -12,6 +12,7 @@ import {
   use,
   app,
   Router,
+  start,
 } from '@lykmapipo/express-common';
 
 /**
@@ -640,4 +641,4 @@ export const routerFor = optns => {
   return router;
 };
 
-export { all, del, get, patch, post, put, use, app, Router };
+export { all, del, get, patch, post, put, use, app, Router, start };
