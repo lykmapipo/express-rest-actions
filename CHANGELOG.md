@@ -1,3 +1,9 @@
+#### 0.6.0 (2019-05-25)
+
+##### New Features
+
+*  export app start ([de2b9689](https://github.com/lykmapipo/express-rest-actions/commit/de2b96892a048f18e00f650b3fb2cd77e76e1c65))
+
 #### 0.5.0 (2019-05-20)
 
 ##### New Features

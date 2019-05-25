@@ -3,7 +3,7 @@ import { readable } from 'is-stream';
 import { mergeObjects } from '@lykmapipo/common';
 import { getString } from '@lykmapipo/env';
 import { Router } from '@lykmapipo/express-common';
-export { Router, all, app, del, get, patch, post, put, use } from '@lykmapipo/express-common';
+export { Router, all, app, del, get, patch, post, put, start, use } from '@lykmapipo/express-common';
 
 /**
  * @function getFor
