@@ -64,7 +64,7 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
-    "@lykmapipo/express-test-helpers": "^0.7.3",
+    "@lykmapipo/express-test-helpers": "^0.8.1",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
     "doxdox": "^3.0.0",
@@ -75,18 +75,18 @@
     "eslint-plugin-mocha": "^5.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "generate-changelog": "^1.7.1",
-    "husky": "^2.3.0",
-    "lint-staged": "^8.1.7",
+    "husky": "^2.4.0",
+    "lint-staged": "^8.2.0",
     "mocha": "^6.1.4",
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
-    "rollup": "^1.13.1"
+    "rollup": "^1.14.2"
   },
   "peerDependencies": {},
   "dependencies": {
     "@lykmapipo/common": ">=0.19.1",
-    "@lykmapipo/env": ">=0.7.8",
-    "@lykmapipo/express-common": ">=0.17.4",
+    "@lykmapipo/env": ">=0.7.9",
+    "@lykmapipo/express-common": ">=0.17.5",
     "is-stream": ">=2.0.0",
     "lodash": ">=4.17.11"
   },
