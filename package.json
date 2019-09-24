@@ -64,7 +64,7 @@
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@commitlint/travis-cli": "^8.2.0",
-    "@lykmapipo/express-test-helpers": "^0.8.7",
+    "@lykmapipo/express-test-helpers": "^0.8.8",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "doxdox": "^3.0.0",
@@ -89,7 +89,7 @@
   "dependencies": {
     "@lykmapipo/common": ">=0.26.4",
     "@lykmapipo/env": ">=0.14.1",
-    "@lykmapipo/express-common": ">=0.17.11",
+    "@lykmapipo/express-common": ">=0.17.12",
     "is-stream": ">=2.0.0",
     "lodash": ">=4.17.15"
   },
