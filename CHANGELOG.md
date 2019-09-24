@@ -1,3 +1,13 @@
+#### 0.7.0 (2019-09-24)
+
+##### Chores
+
+* **deps:**  force latest version & audit fix ([9ddc58be](https://github.com/lykmapipo/express-rest-actions/commit/9ddc58be33300e4ce06641ef23fadd77421924ff))
+
+##### New Features
+
+*  ignore path extension on mquery filter ([bca66451](https://github.com/lykmapipo/express-rest-actions/commit/bca664513b78d2ebed5757fad8e7a4d2d83fd7e8))
+
 #### 0.6.8 (2019-09-16)
 
 ##### Chores
