@@ -1,4 +1,4 @@
-import { isFunction } from 'lodash';
+import { isFunction, omit } from 'lodash';
 import { readable as isReadableStream } from 'is-stream';
 import { mergeObjects } from '@lykmapipo/common';
 import { getString } from '@lykmapipo/env';
@@ -14,6 +14,12 @@ import {
   Router,
   start,
 } from '@lykmapipo/express-common';
+
+/* default options */
+const defaultOptions = {
+  filterParams: true,
+  ignoreParams: ['ext'],
+};
 
 /**
  * @function getFor
@@ -40,8 +46,8 @@ import {
  */
 export const getFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { get: doGet, filterParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const { get: doGet, filterParams = true, ignoreParams = [] } = options;
 
   // create http handler to get resources
   const httpGet = (request, response, next) => {
@@ -55,11 +61,14 @@ export const getFor = optns => {
 
     // extend filter with params
     if (filterParams) {
-      mquery.filter = mergeObjects(params, mquery.filter);
+      mquery.filter = mergeObjects(
+        omit(params, ...ignoreParams),
+        mquery.filter
+      );
     }
 
     // obtain get options
-    const query = mergeObjects(mquery);
+    const query = mergeObjects(mquery, { params });
 
     // handle request
     const afterHttpGet = (error, results) => {
@@ -105,8 +114,12 @@ export const getFor = optns => {
  */
 export const schemaFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { getSchema: doGetSchema, filterParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const {
+    getSchema: doGetSchema,
+    filterParams = true,
+    ignoreParams = [],
+  } = options;
 
   // create http handler to get resource schema
   const httpGetSchema = (request, response, next) => {
@@ -120,7 +133,10 @@ export const schemaFor = optns => {
 
     // extend filter with params
     if (filterParams) {
-      mquery.filter = mergeObjects(params, mquery.filter);
+      mquery.filter = mergeObjects(
+        omit(params, ...ignoreParams),
+        mquery.filter
+      );
     }
 
     // obtain get options
@@ -178,8 +194,13 @@ export const schemaFor = optns => {
  */
 export const downloadFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { download: doDownload, status = 200, filterParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const {
+    download: doDownload,
+    status = 200,
+    filterParams = true,
+    ignoreParams = [],
+  } = options;
 
   // create http handler to download
   const httpDownload = (request, response, next) => {
@@ -192,7 +213,10 @@ export const downloadFor = optns => {
 
     // extend filter with params
     if (filterParams) {
-      mquery.filter = mergeObjects(params, mquery.filter);
+      mquery.filter = mergeObjects(
+        omit(params, ...ignoreParams),
+        mquery.filter
+      );
     }
 
     // obtain get options
@@ -252,8 +276,12 @@ export const downloadFor = optns => {
  */
 export const getByIdFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { getById: doGetById, filterParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const {
+    getById: doGetById,
+    filterParams = true,
+    ignoreParams = [],
+  } = options;
 
   // create http handler to get single resource
   const httpGetById = (request, response, next) => {
@@ -268,11 +296,14 @@ export const getByIdFor = optns => {
 
     // extend filter with params
     if (filterParams) {
-      mquery.filter = mergeObjects(extraParams, mquery.filter);
+      mquery.filter = mergeObjects(
+        omit(extraParams, ...ignoreParams),
+        mquery.filter
+      );
     }
 
     // obtain mquery options and id path param
-    const query = mergeObjects(mquery, { _id: id, id });
+    const query = mergeObjects(mquery, { _id: id, id }, { params });
 
     // handle request
     const afterHttpGetById = (error, results) => {
@@ -317,8 +348,8 @@ export const getByIdFor = optns => {
  */
 export const postFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { post: doPost, bodyParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const { post: doPost, bodyParams = true, ignoreParams = [] } = options;
 
   // create http handler to create single resource
   const httpPost = (request, response, next) => {
@@ -335,7 +366,7 @@ export const postFor = optns => {
 
     // extend body with params
     if (bodyParams) {
-      query = mergeObjects(params, body);
+      query = mergeObjects(omit(params, ...ignoreParams), body);
     }
 
     // handle request
@@ -383,8 +414,13 @@ export const postFor = optns => {
  */
 export const patchFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { patch: doPatch, filterParams = true, bodyParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const {
+    patch: doPatch,
+    filterParams = true,
+    bodyParams = true,
+    ignoreParams = [],
+  } = options;
 
   // create http handler to patch single resource
   const httpPatch = (request, response, next) => {
@@ -402,12 +438,12 @@ export const patchFor = optns => {
 
     // extend body with params
     if (bodyParams) {
-      query = mergeObjects(extraParams, body);
+      query = mergeObjects(omit(extraParams, ...ignoreParams), body);
     }
 
     // extend filter with params
     if (filterParams) {
-      query.filter = mergeObjects(extraParams);
+      query.filter = mergeObjects(omit(extraParams, ...ignoreParams));
     }
 
     // pack request body and id path param
@@ -458,8 +494,13 @@ export const patchFor = optns => {
  */
 export const putFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { put: doPut, filterParams = true, bodyParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const {
+    put: doPut,
+    filterParams = true,
+    bodyParams = true,
+    ignoreParams = [],
+  } = options;
 
   // create http handler to put single resource
   const httpPut = (request, response, next) => {
@@ -477,12 +518,12 @@ export const putFor = optns => {
 
     // extend body with params
     if (bodyParams) {
-      query = mergeObjects(extraParams, body);
+      query = mergeObjects(omit(extraParams, ...ignoreParams), body);
     }
 
     // extend filter with params
     if (filterParams) {
-      query.filter = mergeObjects(extraParams);
+      query.filter = mergeObjects(omit(extraParams, ...ignoreParams));
     }
 
     // pack request body and id path param
@@ -532,8 +573,13 @@ export const putFor = optns => {
  */
 export const deleteFor = optns => {
   // ensure options
-  const options = mergeObjects(optns);
-  const { del: doDelete, soft = false, filterParams = true } = options;
+  const options = mergeObjects(defaultOptions, optns);
+  const {
+    del: doDelete,
+    soft = false,
+    filterParams = true,
+    ignoreParams = [],
+  } = options;
 
   // create http handler to delete single resource
   const httpDelete = (request, response, next) => {
@@ -551,7 +597,7 @@ export const deleteFor = optns => {
 
     // extend filter with params
     if (filterParams) {
-      query.filter = mergeObjects(extraParams);
+      query.filter = mergeObjects(omit(extraParams, ...ignoreParams));
     }
 
     // handle request
