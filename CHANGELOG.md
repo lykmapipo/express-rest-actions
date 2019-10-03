@@ -1,3 +1,9 @@
+#### 0.8.0 (2019-10-03)
+
+##### New Features
+
+*  allow params in all verbs ([4e2303d5](https://github.com/lykmapipo/express-rest-actions/commit/4e2303d58d5672a642de8a7aaf82922a544f0cf0))
+
 #### 0.7.1 (2019-09-24)
 
 ##### Chores

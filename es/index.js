@@ -359,6 +359,9 @@ const postFor = optns => {
       query = mergeObjects(omit(params, ...ignoreParams), body);
     }
 
+    // pack request body with extras
+    query = mergeObjects(query, { params });
+
     // handle request
     const afterHttpPost = (error, results) => {
       // handle error
@@ -437,7 +440,7 @@ const patchFor = optns => {
     }
 
     // pack request body and id path param
-    query = mergeObjects(query, { _id: id, id });
+    query = mergeObjects(query, { _id: id, id }, { params });
 
     // handle request
     const afterHttpPatch = (error, results) => {
@@ -517,7 +520,7 @@ const putFor = optns => {
     }
 
     // pack request body and id path param
-    query = mergeObjects(query, { _id: id, id });
+    query = mergeObjects(query, { _id: id, id }, { params });
 
     // handle request
     const afterHttpPut = (error, results) => {
@@ -583,7 +586,7 @@ const deleteFor = optns => {
     const { id, ...extraParams } = params;
 
     // prepare delete options
-    const query = mergeObjects({ _id: id, id, soft });
+    const query = mergeObjects({ _id: id, id, soft }, { params });
 
     // extend filter with params
     if (filterParams) {
