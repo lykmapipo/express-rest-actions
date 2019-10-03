@@ -176,12 +176,17 @@ describe('getByIdFor', () => {
 
   it('should GET /resource/:id with provided service with params', done => {
     const results = {};
-    const getById = ({ filter }, cb) => {
-      expect(filter).to.exist.and.be.eql({ group: 'testers' });
+    const getById = (body, cb) => {
+      expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
+      expect(body.params).to.exist.and.be.eql({
+        group: 'testers',
+        id: '1',
+        ext: 'json',
+      });
       cb(null, results);
     };
-    app.get('/v1/users/:group/:id', getByIdFor({ getById }));
-    testGet('/v1/users/testers/1')
+    app.get('/v1/users/:group/:id.:ext?', getByIdFor({ getById }));
+    testGet('/v1/users/testers/1.json')
       .expect(200)
       .end((error, { body }) => {
         expect(error).to.not.exist;
@@ -216,10 +221,14 @@ describe('postFor', () => {
     const results = {};
     const post = (body, cb) => {
       expect(body.group).to.exist.and.be.eql('testers');
+      expect(body.params).to.exist.and.be.eql({
+        group: 'testers',
+        ext: 'json',
+      });
       cb(null, results);
     };
-    app.post('/v1/users/:group', postFor({ post }));
-    testPost('/v1/users/testers', results)
+    app.post('/v1/users/:group.:ext?', postFor({ post }));
+    testPost('/v1/users/testers.json', results)
       .expect(201)
       .end((error, { body }) => {
         expect(error).to.not.exist;
@@ -255,10 +264,15 @@ describe('patchFor', () => {
     const patch = (body, cb) => {
       expect(body.group).to.exist.and.be.eql('testers');
       expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
+      expect(body.params).to.exist.and.be.eql({
+        group: 'testers',
+        id: '1',
+        ext: 'json',
+      });
       cb(null, results);
     };
-    app.patch('/v1/users/:group/:id', patchFor({ patch }));
-    testPatch('/v1/users/testers/1', results)
+    app.patch('/v1/users/:group/:id.:ext?', patchFor({ patch }));
+    testPatch('/v1/users/testers/1.json', results)
       .expect(200)
       .end((error, { body }) => {
         expect(error).to.not.exist;
@@ -294,10 +308,15 @@ describe('putFor', () => {
     const put = (body, cb) => {
       expect(body.group).to.exist.and.be.eql('testers');
       expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
+      expect(body.params).to.exist.and.be.eql({
+        group: 'testers',
+        id: '1',
+        ext: 'json',
+      });
       cb(null, results);
     };
-    app.put('/v1/users/:group/:id', putFor({ put }));
-    testPut('/v1/users/testers/1', results)
+    app.put('/v1/users/:group/:id.:ext?', putFor({ put }));
+    testPut('/v1/users/testers/1.json', results)
       .expect(200)
       .end((error, { body }) => {
         expect(error).to.not.exist;
@@ -332,10 +351,15 @@ describe('deleteFor', () => {
     const results = {};
     const del = (body, cb) => {
       expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
+      expect(body.params).to.exist.and.be.eql({
+        group: 'testers',
+        id: '1',
+        ext: 'json',
+      });
       cb(null, results);
     };
-    app.delete('/v1/users/:group/:id', deleteFor({ del }));
-    testDelete('/v1/users/testers/1')
+    app.delete('/v1/users/:group/:id.:ext?', deleteFor({ del }));
+    testDelete('/v1/users/testers/1.json')
       .expect(200)
       .end((error, { body }) => {
         expect(error).to.not.exist;
