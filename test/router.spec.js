@@ -25,17 +25,17 @@ describe('routerFor', () => {
   };
   const router = routerFor(options);
 
-  it('should GET /resource', done => {
+  it('should GET /resource', (done) => {
     const { testGet } = testRouter('users', router);
     testGet().expect(200, done);
   });
 
-  it('should GET /resource/schema', done => {
+  it('should GET /resource/schema', (done) => {
     const { testGetSchema } = testRouter('users', router);
     testGetSchema().expect(200, done);
   });
 
-  it('should GET /resource/export', done => {
+  it('should GET /resource/export', (done) => {
     const { testGetExport } = testRouter('users', router);
     testGetExport()
       .expect('Content-Type', 'text/plain; charset=utf-8')
@@ -43,27 +43,27 @@ describe('routerFor', () => {
       .expect(200, done);
   });
 
-  it('should GET /resource/:id', done => {
+  it('should GET /resource/:id', (done) => {
     const { testGet } = testRouter('users', router);
     testGet(1).expect(200, done);
   });
 
-  it('should POST /resource', done => {
+  it('should POST /resource', (done) => {
     const { testPost } = testRouter('users', router);
     testPost({ name: faker.name.findName() }).expect(201, done);
   });
 
-  it('should PATCH /resource/:id', done => {
+  it('should PATCH /resource/:id', (done) => {
     const { testPatch } = testRouter('users', router);
     testPatch(1, { name: faker.name.findName() }).expect(200, done);
   });
 
-  it('should PUT /resource/:id', done => {
+  it('should PUT /resource/:id', (done) => {
     const { testPut } = testRouter('users', router);
     testPut(1, { name: faker.name.findName() }).expect(200, done);
   });
 
-  it('should DELETE /resource/:id', done => {
+  it('should DELETE /resource/:id', (done) => {
     const { testDelete } = testRouter('users', router);
     testDelete(1).expect(200, done);
   });

@@ -24,7 +24,7 @@ import {
 describe('getFor', () => {
   beforeEach(() => clear());
 
-  it('should GET /resource with provided service', done => {
+  it('should GET /resource with provided service', (done) => {
     const results = { data: [] };
     const get = (query, cb) => cb(null, results);
     app.get('/v1/users', getFor({ get }));
@@ -37,12 +37,12 @@ describe('getFor', () => {
       });
   });
 
-  it('should GET /resource with no service', done => {
+  it('should GET /resource with no service', (done) => {
     app.get('/v1/users', getFor());
     testGet('/v1/users').expect(405, done);
   });
 
-  it('should GET /resource with provided service and params', done => {
+  it('should GET /resource with provided service and params', (done) => {
     const results = { data: [] };
     const get = ({ filter }, cb) => {
       expect(filter).to.exist.and.be.eql({ group: 'testers' });
@@ -62,7 +62,7 @@ describe('getFor', () => {
 describe('schemaFor', () => {
   beforeEach(() => clear());
 
-  it('should GET /resource/schema with provided service', done => {
+  it('should GET /resource/schema with provided service', (done) => {
     const schema = {};
     const getSchema = (query, cb) => cb(null, schema);
     app.get('/v1/users/schema', schemaFor({ getSchema }));
@@ -75,12 +75,12 @@ describe('schemaFor', () => {
       });
   });
 
-  it('should GET /resource/schema with no service', done => {
+  it('should GET /resource/schema with no service', (done) => {
     app.get('/v1/users/schema', schemaFor());
     testGet('/v1/users/schema').expect(405, done);
   });
 
-  it('should GET /resource/schema with provided service and params', done => {
+  it('should GET /resource/schema with provided service and params', (done) => {
     const schema = {};
     const getSchema = ({ filter }, cb) => {
       expect(filter).to.exist.and.be.eql({ group: 'testers' });
@@ -100,7 +100,7 @@ describe('schemaFor', () => {
 describe('downloadFor', () => {
   beforeEach(() => clear());
 
-  it('should GET /resource/download with provided service', done => {
+  it('should GET /resource/download with provided service', (done) => {
     const file = `${__dirname}/fixtures/test.txt`;
     const fileContent = readFileSync(file).toString('base64');
 
@@ -123,12 +123,12 @@ describe('downloadFor', () => {
       });
   });
 
-  it('should GET /resource/download with no service', done => {
+  it('should GET /resource/download with no service', (done) => {
     app.get('/v1/users/download', downloadFor());
     testDownload('/v1/users/download').expect(405, done);
   });
 
-  it('should GET /resource/download with provided service with params', done => {
+  it('should GET /resource/download with provided service with params', (done) => {
     const file = `${__dirname}/fixtures/test.txt`;
     const fileContent = readFileSync(file).toString('base64');
 
@@ -156,7 +156,7 @@ describe('downloadFor', () => {
 describe('getByIdFor', () => {
   beforeEach(() => clear());
 
-  it('should GET /resource/:id with provided service', done => {
+  it('should GET /resource/:id with provided service', (done) => {
     const results = {};
     const getById = (query, cb) => cb(null, results);
     app.get('/v1/users/:id', getByIdFor({ getById }));
@@ -169,12 +169,12 @@ describe('getByIdFor', () => {
       });
   });
 
-  it('should GET /resource/:id with no service', done => {
+  it('should GET /resource/:id with no service', (done) => {
     app.get('/v1/users/:id', getByIdFor());
     testGet('/v1/users/1').expect(405, done);
   });
 
-  it('should GET /resource/:id with provided service with params', done => {
+  it('should GET /resource/:id with provided service with params', (done) => {
     const results = {};
     const getById = (body, cb) => {
       expect(body.filter).to.exist.and.be.eql({ group: 'testers' });
@@ -199,7 +199,7 @@ describe('getByIdFor', () => {
 describe('postFor', () => {
   beforeEach(() => clear());
 
-  it('should POST /resource with provided service', done => {
+  it('should POST /resource with provided service', (done) => {
     const results = {};
     const post = (body, cb) => cb(null, results);
     app.post('/v1/users', postFor({ post }));
@@ -212,12 +212,12 @@ describe('postFor', () => {
       });
   });
 
-  it('should POST /resource with no service', done => {
+  it('should POST /resource with no service', (done) => {
     app.post('/v1/users', postFor());
     testPost('/v1/users', {}).expect(405, done);
   });
 
-  it('should POST /resource with provided service with params', done => {
+  it('should POST /resource with provided service with params', (done) => {
     const results = {};
     const post = (body, cb) => {
       expect(body.group).to.exist.and.be.eql('testers');
@@ -241,7 +241,7 @@ describe('postFor', () => {
 describe('patchFor', () => {
   beforeEach(() => clear());
 
-  it('should PATCH /resource/:id with provided service', done => {
+  it('should PATCH /resource/:id with provided service', (done) => {
     const results = {};
     const patch = (body, cb) => cb(null, results);
     app.patch('/v1/users/:id', patchFor({ patch }));
@@ -254,12 +254,12 @@ describe('patchFor', () => {
       });
   });
 
-  it('should PATCH /resource/:id with no service', done => {
+  it('should PATCH /resource/:id with no service', (done) => {
     app.patch('/v1/users/:id', patchFor());
     testPatch('/v1/users/1', {}).expect(405, done);
   });
 
-  it('should PATCH /resource/:id with provided service with params', done => {
+  it('should PATCH /resource/:id with provided service with params', (done) => {
     const results = {};
     const patch = (body, cb) => {
       expect(body.group).to.exist.and.be.eql('testers');
@@ -285,7 +285,7 @@ describe('patchFor', () => {
 describe('putFor', () => {
   beforeEach(() => clear());
 
-  it('should PUT /resource/:id with provided service', done => {
+  it('should PUT /resource/:id with provided service', (done) => {
     const results = {};
     const put = (body, cb) => cb(null, results);
     app.put('/v1/users/:id', putFor({ put }));
@@ -298,12 +298,12 @@ describe('putFor', () => {
       });
   });
 
-  it('should PUT /resource/:id with no service', done => {
+  it('should PUT /resource/:id with no service', (done) => {
     app.put('/v1/users/:id', putFor());
     testPut('/v1/users/1', {}).expect(405, done);
   });
 
-  it('should PUT /resource/:id with provided service with params', done => {
+  it('should PUT /resource/:id with provided service with params', (done) => {
     const results = {};
     const put = (body, cb) => {
       expect(body.group).to.exist.and.be.eql('testers');
@@ -329,7 +329,7 @@ describe('putFor', () => {
 describe('deleteFor', () => {
   beforeEach(() => clear());
 
-  it('should DELETE /resource/:id with provided service', done => {
+  it('should DELETE /resource/:id with provided service', (done) => {
     const results = {};
     const del = (body, cb) => cb(null, results);
     app.delete('/v1/users/:id', deleteFor({ del }));
@@ -342,12 +342,12 @@ describe('deleteFor', () => {
       });
   });
 
-  it('should DELETE /resource/:id with no service', done => {
+  it('should DELETE /resource/:id with no service', (done) => {
     app.delete('/v1/users/:id', deleteFor());
     testDelete('/v1/users/1').expect(405, done);
   });
 
-  it('should DELETE /resource/:id with provided service with params', done => {
+  it('should DELETE /resource/:id with provided service with params', (done) => {
     const results = {};
     const del = (body, cb) => {
       expect(body.filter).to.exist.and.be.eql({ group: 'testers' });

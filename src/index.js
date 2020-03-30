@@ -44,7 +44,7 @@ const defaultOptions = {
  * app.get('/v1/users', getFor({ get }));
  *
  */
-export const getFor = optns => {
+export const getFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const { get: doGet, filterParams = true, ignoreParams = [] } = options;
@@ -112,7 +112,7 @@ export const getFor = optns => {
  * app.get('/v1/users', schemaFor({ getSchema }));
  *
  */
-export const schemaFor = optns => {
+export const schemaFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -192,7 +192,7 @@ export const schemaFor = optns => {
  * app.get('/v1/files/avatar', downloadFor({ download }));
  *
  */
-export const downloadFor = optns => {
+export const downloadFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -274,7 +274,7 @@ export const downloadFor = optns => {
  * app.get('/v1/users/:id', getByIdFor({ getById }));
  *
  */
-export const getByIdFor = optns => {
+export const getByIdFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -346,7 +346,7 @@ export const getByIdFor = optns => {
  * app.post('/v1/users', postFor({ post }));
  *
  */
-export const postFor = optns => {
+export const postFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const { post: doPost, bodyParams = true, ignoreParams = [] } = options;
@@ -415,7 +415,7 @@ export const postFor = optns => {
  * app.patch('/v1/users/:id', patchFor({ patch }));
  *
  */
-export const patchFor = optns => {
+export const patchFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -495,7 +495,7 @@ export const patchFor = optns => {
  * app.put('/v1/users/:id', putFor({ put }));
  *
  */
-export const putFor = optns => {
+export const putFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -574,7 +574,7 @@ export const putFor = optns => {
  * app.delete('/v1/users/:id', deleteFor({ del }));
  *
  */
-export const deleteFor = optns => {
+export const deleteFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -659,7 +659,7 @@ export const deleteFor = optns => {
  * app.use(routerFor(options));
  *
  */
-export const routerFor = optns => {
+export const routerFor = (optns) => {
   // ensure options
   const defaults = { version: getString('API_VERSION', '1.0.0'), soft: false };
   const options = mergeObjects(defaults, optns);
