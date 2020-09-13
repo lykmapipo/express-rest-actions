@@ -1,3 +1,9 @@
+#### 0.8.26 (2020-09-13)
+
+##### Chores
+
+* **deps:**  force latest version & audit fix ([202355f9](https://github.com/lykmapipo/express-rest-actions/commit/202355f9b6860e181adefaad1c6a87e63ee149a1))
+
 #### 0.8.25 (2020-09-03)
 
 ##### Chores
