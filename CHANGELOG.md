@@ -1,3 +1,11 @@
+#### 0.8.27 (2020-12-23)
+
+##### Chores
+
+* **deps:**
+  *  force latest version & audit fix ([3032bb04](https://github.com/lykmapipo/express-rest-actions/commit/3032bb044a4b0a7f64f5dca725bae8aada2e1297))
+  *  bump ini from 1.3.5 to 1.3.7 ([47a21d89](https://github.com/lykmapipo/express-rest-actions/commit/47a21d891b4d48581bc856667e191fc5cc55a016))
+
 #### 0.8.26 (2020-09-13)
 
 ##### Chores
