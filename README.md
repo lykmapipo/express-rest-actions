@@ -3,6 +3,16 @@
 [![Build Status](https://travis-ci.org/lykmapipo/express-rest-actions.svg?branch=master)](https://travis-ci.org/lykmapipo/express-rest-actions)
 [![Dependencies Status](https://david-dm.org/lykmapipo/express-rest-actions.svg?style=flat-square)](https://david-dm.org/lykmapipo/express-rest-actions)
 
+[![Build Status](https://travis-ci.com/lykmapipo/express-rest-actions.svg?branch=master)](https://travis-ci.com/lykmapipo/express-rest-actions)
+[![Dependencies Status](https://david-dm.org/lykmapipo/express-rest-actions.svg)](https://david-dm.org/lykmapipo/express-rest-actions)
+[![Coverage Status](https://coveralls.io/repos/github/lykmapipo/express-rest-actions/badge.svg?branch=master)](https://coveralls.io/github/lykmapipo/express-rest-actions?branch=master)
+[![GitHub License](https://img.shields.io/github/license/lykmapipo/express-rest-actions)](https://github.com/lykmapipo/express-rest-actions/blob/master/LICENSE)
+
+[![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
+[![npm version](https://img.shields.io/npm/v/@lykmapipo/express-rest-actions)](https://www.npmjs.com/package/@lykmapipo/express-rest-actions)
+
 Opinionated rest actions for express
 
 ## Installation
@@ -13,10 +23,10 @@ $ npm install --save @lykmapipo/express-rest-actions
 
 ## Usage
 ```js
-const { 
+import { 
   app, getFor, getByIdFor, postFor, 
   patchFor, putFor, deleteFor, routerFor 
-} = require('@lykmapipo/express-rest-actions');
+} from '@lykmapipo/express-rest-actions';
 
 const options = { 
   get: ..., getById: ..., 
