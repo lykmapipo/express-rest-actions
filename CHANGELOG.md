@@ -1,3 +1,14 @@
+#### 0.8.29 (2021-08-23)
+
+##### Chores
+
+* **deps:**  force latest version & audit fix ([349b7318](https://github.com/lykmapipo/express-rest-actions/commit/349b731870947ebc8f23a080f4fb9ef5bdf3b448))
+*  add status badges & improve configs ([de7cab95](https://github.com/lykmapipo/express-rest-actions/commit/de7cab953e33bb4dbe6f66db42da6d9491f35b57))
+
+##### Documentation Changes
+
+* **readme:**  drop unused status badges ([d5f85159](https://github.com/lykmapipo/express-rest-actions/commit/d5f851598ebf635bdf9128c2a08c2627ca8c78db))
+
 #### 0.8.28 (2021-02-16)
 
 #### 0.8.27 (2020-12-23)
