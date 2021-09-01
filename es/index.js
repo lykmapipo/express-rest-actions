@@ -34,7 +34,7 @@ const defaultOptions = {
  * app.get('/v1/users', getFor({ get }));
  *
  */
-const getFor = optns => {
+const getFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const { get: doGet, filterParams = true, ignoreParams = [] } = options;
@@ -102,7 +102,7 @@ const getFor = optns => {
  * app.get('/v1/users', schemaFor({ getSchema }));
  *
  */
-const schemaFor = optns => {
+const schemaFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -182,7 +182,7 @@ const schemaFor = optns => {
  * app.get('/v1/files/avatar', downloadFor({ download }));
  *
  */
-const downloadFor = optns => {
+const downloadFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -264,7 +264,7 @@ const downloadFor = optns => {
  * app.get('/v1/users/:id', getByIdFor({ getById }));
  *
  */
-const getByIdFor = optns => {
+const getByIdFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -336,7 +336,7 @@ const getByIdFor = optns => {
  * app.post('/v1/users', postFor({ post }));
  *
  */
-const postFor = optns => {
+const postFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const { post: doPost, bodyParams = true, ignoreParams = [] } = options;
@@ -405,7 +405,7 @@ const postFor = optns => {
  * app.patch('/v1/users/:id', patchFor({ patch }));
  *
  */
-const patchFor = optns => {
+const patchFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -485,7 +485,7 @@ const patchFor = optns => {
  * app.put('/v1/users/:id', putFor({ put }));
  *
  */
-const putFor = optns => {
+const putFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -564,7 +564,7 @@ const putFor = optns => {
  * app.delete('/v1/users/:id', deleteFor({ del }));
  *
  */
-const deleteFor = optns => {
+const deleteFor = (optns) => {
   // ensure options
   const options = mergeObjects(defaultOptions, optns);
   const {
@@ -649,7 +649,7 @@ const deleteFor = optns => {
  * app.use(routerFor(options));
  *
  */
-const routerFor = optns => {
+const routerFor = (optns) => {
   // ensure options
   const defaults = { version: getString('API_VERSION', '1.0.0'), soft: false };
   const options = mergeObjects(defaults, optns);
