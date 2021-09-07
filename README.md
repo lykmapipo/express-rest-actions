@@ -1,6 +1,6 @@
 # express-rest-actions
 
-[![Build Status](https://travis-ci.com/lykmapipo/express-rest-actions.svg?branch=master)](https://travis-ci.com/lykmapipo/express-rest-actions)
+[![Build Status](https://app.travis-ci.com/lykmapipo/express-rest-actions.svg?branch=master)](https://app.travis-ci.com/lykmapipo/express-rest-actions)
 [![Dependencies Status](https://david-dm.org/lykmapipo/express-rest-actions.svg)](https://david-dm.org/lykmapipo/express-rest-actions)
 [![Coverage Status](https://coveralls.io/repos/github/lykmapipo/express-rest-actions/badge.svg?branch=master)](https://coveralls.io/github/lykmapipo/express-rest-actions?branch=master)
 [![GitHub License](https://img.shields.io/github/license/lykmapipo/express-rest-actions)](https://github.com/lykmapipo/express-rest-actions/blob/master/LICENSE)
