@@ -1,5 +1,4 @@
 import { isFunction, omit } from 'lodash';
-import { readable as isReadableStream } from 'is-stream';
 import { mergeObjects } from '@lykmapipo/common';
 import { getString } from '@lykmapipo/env';
 import {
@@ -15,10 +14,29 @@ import {
   start,
 } from '@lykmapipo/express-common';
 
-/* default options */
+// default options
 const defaultOptions = {
   filterParams: true,
   ignoreParams: ['ext'],
+};
+
+// utils
+const isReadableStream = (stream) => {
+  // check is stream
+  const isStream =
+    stream !== null &&
+    typeof stream === 'object' &&
+    typeof stream.pipe === 'function';
+
+  // check is readable stream
+  const isReadable =
+    stream.readable !== false &&
+    // eslint-disable-next-line no-underscore-dangle
+    typeof stream._read === 'function' &&
+    // eslint-disable-next-line no-underscore-dangle
+    typeof stream._readableState === 'object';
+
+  return isStream && isReadable;
 };
 
 /**
